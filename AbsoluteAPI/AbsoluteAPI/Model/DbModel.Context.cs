@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AbsoluteAPI
+namespace AbsoluteAPI.Model
 {
     using System;
     using System.Data.Entity;
@@ -30,5 +30,6 @@ namespace AbsoluteAPI
         public virtual DbSet<APP_ELENCO_SQUADRE_V> APP_ELENCO_SQUADRE_V { get; set; }
         public virtual DbSet<APP_INCONTRI_V> APP_INCONTRI_V { get; set; }
         public virtual DbSet<APP_NEWS_V> APP_NEWS_V { get; set; }
+        public virtual DbSet<APP_LS_COMPETIZIONI_EVENTI_V> APP_LS_COMPETIZIONI_EVENTI_V { get; set; }
     }
 }

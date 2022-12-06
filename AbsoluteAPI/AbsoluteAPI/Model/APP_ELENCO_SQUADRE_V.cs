@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AbsoluteAPI
+namespace AbsoluteAPI.Model
 {
     using System;
     using System.Collections.Generic;
@@ -16,5 +16,6 @@ namespace AbsoluteAPI
     {
         public int ID_SQUADRA { get; set; }
         public string NOME { get; set; }
+        public string LOGO { get; set; }
     }
 }

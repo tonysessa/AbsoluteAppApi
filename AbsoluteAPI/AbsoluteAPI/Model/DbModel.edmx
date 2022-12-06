@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="absoluteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="absoluteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'absolute.MSSql27442.APP_BANNER_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="APP_BANNER_V">
@@ -47,6 +47,7 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_ELENCO_SQUADRE_V' does not
           </Key>
           <Property Name="ID_SQUADRA" Type="int" Nullable="false" />
           <Property Name="NOME" Type="nvarchar" MaxLength="150" />
+          <Property Name="LOGO" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'absolute.MSSql27442.APP_INCONTRI_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -80,6 +81,23 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_INCONTRI_V' does not have 
           <Property Name="ID_SQUADRA_2" Type="int" Nullable="false" />
           <Property Name="ID_CALENDARIO" Type="int" Nullable="false" />
           <Property Name="NOME_CALENDARIO" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'absolute.MSSql27442.APP_LS_COMPETIZIONI_EVENTI_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="APP_LS_COMPETIZIONI_EVENTI_V">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="NOME" />
+            <PropertyRef Name="ANNO" />
+            <PropertyRef Name="ID_EVENTI" />
+            <PropertyRef Name="NOME_EVENTI" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="NOME" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ANNO" Type="int" Nullable="false" />
+          <Property Name="ID_EVENTI" Type="int" Nullable="false" />
+          <Property Name="NOME_EVENTI" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TIPO_GIRONE" Type="nvarchar" MaxLength="1" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -130,7 +148,8 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
           <EntitySet Name="APP_ELENCO_SQUADRE_V" EntityType="Self.APP_ELENCO_SQUADRE_V" store:Type="Views" store:Schema="MSSql27442">
             <DefiningQuery>SELECT 
     [APP_ELENCO_SQUADRE_V].[ID_SQUADRA] AS [ID_SQUADRA], 
-    [APP_ELENCO_SQUADRE_V].[NOME] AS [NOME]
+    [APP_ELENCO_SQUADRE_V].[NOME] AS [NOME], 
+    [APP_ELENCO_SQUADRE_V].[LOGO] AS [LOGO]
     FROM [MSSql27442].[APP_ELENCO_SQUADRE_V] AS [APP_ELENCO_SQUADRE_V]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="APP_INCONTRI_V" EntityType="Self.APP_INCONTRI_V" store:Type="Views" store:Schema="MSSql27442">
@@ -154,6 +173,16 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
     [APP_INCONTRI_V].[NOME_CALENDARIO] AS [NOME_CALENDARIO]
     FROM [MSSql27442].[APP_INCONTRI_V] AS [APP_INCONTRI_V]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="APP_LS_COMPETIZIONI_EVENTI_V" EntityType="Self.APP_LS_COMPETIZIONI_EVENTI_V" store:Type="Views" store:Schema="MSSql27442">
+            <DefiningQuery>SELECT 
+    [APP_LS_COMPETIZIONI_EVENTI_V].[ID] AS [ID], 
+    [APP_LS_COMPETIZIONI_EVENTI_V].[NOME] AS [NOME], 
+    [APP_LS_COMPETIZIONI_EVENTI_V].[ANNO] AS [ANNO], 
+    [APP_LS_COMPETIZIONI_EVENTI_V].[ID_EVENTI] AS [ID_EVENTI], 
+    [APP_LS_COMPETIZIONI_EVENTI_V].[NOME_EVENTI] AS [NOME_EVENTI], 
+    [APP_LS_COMPETIZIONI_EVENTI_V].[TIPO_GIRONE] AS [TIPO_GIRONE]
+    FROM [MSSql27442].[APP_LS_COMPETIZIONI_EVENTI_V] AS [APP_LS_COMPETIZIONI_EVENTI_V]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="APP_NEWS_V" EntityType="Self.APP_NEWS_V" store:Type="Views" store:Schema="MSSql27442">
             <DefiningQuery>SELECT 
     [APP_NEWS_V].[ID] AS [ID], 
@@ -173,8 +202,7 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
     FROM [MSSql27442].[APP_NEWS_V] AS [APP_NEWS_V]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="absoluteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -214,6 +242,7 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
           </Key>
           <Property Name="ID_SQUADRA" Type="Int32" Nullable="false" />
           <Property Name="NOME" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="LOGO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="APP_INCONTRI_V">
           <Key>
@@ -271,7 +300,23 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
           <EntitySet Name="APP_ELENCO_SQUADRE_V" EntityType="Self.APP_ELENCO_SQUADRE_V" />
           <EntitySet Name="APP_INCONTRI_V" EntityType="Self.APP_INCONTRI_V" />
           <EntitySet Name="APP_NEWS_V" EntityType="Self.APP_NEWS_V" />
+          <EntitySet Name="APP_LS_COMPETIZIONI_EVENTI_V" EntityType="absoluteModel.APP_LS_COMPETIZIONI_EVENTI_V" />
         </EntityContainer>
+        <EntityType Name="APP_LS_COMPETIZIONI_EVENTI_V">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="NOME" />
+            <PropertyRef Name="ANNO" />
+            <PropertyRef Name="ID_EVENTI" />
+            <PropertyRef Name="NOME_EVENTI" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="NOME" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ANNO" Type="Int32" Nullable="false" />
+          <Property Name="ID_EVENTI" Type="Int32" Nullable="false" />
+          <Property Name="NOME_EVENTI" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TIPO_GIRONE" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -309,6 +354,7 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
           <EntitySetMapping Name="APP_ELENCO_SQUADRE_V">
             <EntityTypeMapping TypeName="absoluteModel.APP_ELENCO_SQUADRE_V">
               <MappingFragment StoreEntitySet="APP_ELENCO_SQUADRE_V">
+                <ScalarProperty Name="LOGO" ColumnName="LOGO" />
                 <ScalarProperty Name="ID_SQUADRA" ColumnName="ID_SQUADRA" />
                 <ScalarProperty Name="NOME" ColumnName="NOME" />
               </MappingFragment>
@@ -354,6 +400,18 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
                 <ScalarProperty Name="ABILITATO" ColumnName="ABILITATO" />
                 <ScalarProperty Name="FL_HOME" ColumnName="FL_HOME" />
                 <ScalarProperty Name="TITOLO_BREVE" ColumnName="TITOLO_BREVE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APP_LS_COMPETIZIONI_EVENTI_V">
+            <EntityTypeMapping TypeName="absoluteModel.APP_LS_COMPETIZIONI_EVENTI_V">
+              <MappingFragment StoreEntitySet="APP_LS_COMPETIZIONI_EVENTI_V">
+                <ScalarProperty Name="TIPO_GIRONE" ColumnName="TIPO_GIRONE" />
+                <ScalarProperty Name="NOME_EVENTI" ColumnName="NOME_EVENTI" />
+                <ScalarProperty Name="ID_EVENTI" ColumnName="ID_EVENTI" />
+                <ScalarProperty Name="ANNO" ColumnName="ANNO" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AbsoluteAPI
+namespace AbsoluteAPI.Model
 {
     using System;
     using System.Collections.Generic;

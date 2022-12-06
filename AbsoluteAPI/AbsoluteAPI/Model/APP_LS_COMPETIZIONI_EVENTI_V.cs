@@ -7,12 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AbsoluteAPI
+namespace AbsoluteAPI.Model
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class APP_COMPETIZIONI_EVENTI_V
+    public partial class APP_LS_COMPETIZIONI_EVENTI_V
     {
         public int ID { get; set; }
         public string NOME { get; set; }

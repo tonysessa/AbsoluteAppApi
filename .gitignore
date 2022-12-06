@@ -3,3 +3,7 @@
 ################################################################################
 
 /AbsoluteAPI/AbsoluteAPI/bin
+/AbsoluteAPI/.vs/AbsoluteAPI
+/.vs
+/AbsoluteAPI/AbsoluteAPI/obj
+/AbsoluteAPI/packages

@@ -7,22 +7,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AbsoluteAPI
+namespace AbsoluteAPI.Model
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class APP_BANNER_V
+    public partial class APP_NEWS_V
     {
         public int ID { get; set; }
         public Nullable<System.DateTime> DATA_INS { get; set; }
         public string LOGIN_INS { get; set; }
         public Nullable<System.DateTime> DATA_AGG { get; set; }
         public string LOGIN_AGG { get; set; }
+        public Nullable<System.DateTime> DATA_NEWS { get; set; }
         public string TITOLO { get; set; }
+        public string TESTO { get; set; }
         public string IMMAGINE { get; set; }
         public string IMMAGINE_PREV { get; set; }
         public string LINK_ESTERNO { get; set; }
         public Nullable<int> ABILITATO { get; set; }
+        public Nullable<int> FL_HOME { get; set; }
+        public string TITOLO_BREVE { get; set; }
     }
 }

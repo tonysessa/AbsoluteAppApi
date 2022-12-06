@@ -130,37 +130,39 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="APP_BANNER_V.cs">
+    <Compile Include="Model\APP_BANNER_V.cs">
       <DependentUpon>DbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="APP_COMPETIZIONI_EVENTI_V.cs">
+    <Compile Include="Model\APP_COMPETIZIONI_EVENTI_V.cs">
       <DependentUpon>DbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="APP_ELENCO_SQUADRE_V.cs">
+    <Compile Include="Model\APP_ELENCO_SQUADRE_V.cs">
       <DependentUpon>DbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="APP_INCONTRI_V.cs">
+    <Compile Include="Model\APP_INCONTRI_V.cs">
       <DependentUpon>DbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="APP_NEWS_V.cs">
+    <Compile Include="Model\APP_LS_COMPETIZIONI_EVENTI_V.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\APP_NEWS_V.cs">
       <DependentUpon>DbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="DbModel.Context.cs">
+    <Compile Include="Model\DbModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DbModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DbModel.cs">
+    <Compile Include="Model\DbModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DbModel.Designer.cs">
+    <Compile Include="Model\DbModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DbModel.edmx</DependentUpon>
@@ -168,16 +170,20 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\partial\APP_BANNER_V_p.cs" />
+    <Compile Include="Model\partial\APP_NEWS_V_p.cs" />
+    <Compile Include="Model\partial\APP_ELENCO_SQUADRE_V_p.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="support\constMsg.cs" />
     <Compile Include="support\jsonObj.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DbModel.Context.tt">
+    <Content Include="Model\DbModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DbModel.edmx</DependentUpon>
       <LastGenOutput>DbModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="DbModel.tt">
+    <Content Include="Model\DbModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DbModel.edmx</DependentUpon>
       <LastGenOutput>DbModel.cs</LastGenOutput>
@@ -196,11 +202,11 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="DbModel.edmx">
+    <EntityDeploy Include="Model\DbModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DbModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="DbModel.edmx.diagram">
+    <Content Include="Model\DbModel.edmx.diagram">
       <DependentUpon>DbModel.edmx</DependentUpon>
     </Content>
     <None Include="packages.config" />
