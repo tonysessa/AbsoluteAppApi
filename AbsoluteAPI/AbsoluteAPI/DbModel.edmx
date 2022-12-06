@@ -1,0 +1,383 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="absoluteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'absolute.MSSql27442.APP_BANNER_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="APP_BANNER_V">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATA_INS" Type="datetime" />
+          <Property Name="LOGIN_INS" Type="varchar" MaxLength="10" />
+          <Property Name="DATA_AGG" Type="datetime" />
+          <Property Name="LOGIN_AGG" Type="varchar" MaxLength="10" />
+          <Property Name="TITOLO" Type="nvarchar" MaxLength="255" />
+          <Property Name="IMMAGINE" Type="nvarchar" MaxLength="255" />
+          <Property Name="IMMAGINE_PREV" Type="nvarchar" MaxLength="255" />
+          <Property Name="LINK_ESTERNO" Type="nvarchar" MaxLength="255" />
+          <Property Name="ABILITATO" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'absolute.MSSql27442.APP_COMPETIZIONI_EVENTI_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="APP_COMPETIZIONI_EVENTI_V">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="NOME" />
+            <PropertyRef Name="ANNO" />
+            <PropertyRef Name="ID_EVENTI" />
+            <PropertyRef Name="NOME_EVENTI" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="NOME" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ANNO" Type="int" Nullable="false" />
+          <Property Name="ID_EVENTI" Type="int" Nullable="false" />
+          <Property Name="NOME_EVENTI" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TIPO_GIRONE" Type="nvarchar" MaxLength="1" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'absolute.MSSql27442.APP_ELENCO_SQUADRE_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="APP_ELENCO_SQUADRE_V">
+          <Key>
+            <PropertyRef Name="ID_SQUADRA" />
+          </Key>
+          <Property Name="ID_SQUADRA" Type="int" Nullable="false" />
+          <Property Name="NOME" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'absolute.MSSql27442.APP_INCONTRI_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="APP_INCONTRI_V">
+          <Key>
+            <PropertyRef Name="ID_COMPETIZIONE" />
+            <PropertyRef Name="NOME" />
+            <PropertyRef Name="NOME_EVENTO" />
+            <PropertyRef Name="ID_EVENTO" />
+            <PropertyRef Name="ID_INCONTRO" />
+            <PropertyRef Name="ID_CAMPO" />
+            <PropertyRef Name="ID_SQUADRA_1" />
+            <PropertyRef Name="ID_SQUADRA_2" />
+            <PropertyRef Name="ID_CALENDARIO" />
+            <PropertyRef Name="NOME_CALENDARIO" />
+          </Key>
+          <Property Name="ID_COMPETIZIONE" Type="int" Nullable="false" />
+          <Property Name="NOME" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NOME_EVENTO" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ID_EVENTO" Type="int" Nullable="false" />
+          <Property Name="TIPO_EVENTO" Type="nvarchar" MaxLength="1" />
+          <Property Name="ORDINE_CLASSIFICA" Type="nvarchar" MaxLength="1" />
+          <Property Name="ID_INCONTRO" Type="int" Nullable="false" />
+          <Property Name="DATA_EVENTO" Type="datetime" />
+          <Property Name="DATA_POSTICIPO" Type="datetime" />
+          <Property Name="ID_CAMPO" Type="int" Nullable="false" />
+          <Property Name="ID_CAMPO_RECUPERO" Type="int" />
+          <Property Name="ORA" Type="nvarchar" MaxLength="5" />
+          <Property Name="ORA_POSTICIPO" Type="nvarchar" MaxLength="5" />
+          <Property Name="ID_SQUADRA_1" Type="int" Nullable="false" />
+          <Property Name="ID_SQUADRA_2" Type="int" Nullable="false" />
+          <Property Name="ID_CALENDARIO" Type="int" Nullable="false" />
+          <Property Name="NOME_CALENDARIO" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="APP_NEWS_V">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATA_INS" Type="datetime" />
+          <Property Name="LOGIN_INS" Type="varchar" MaxLength="10" />
+          <Property Name="DATA_AGG" Type="datetime" />
+          <Property Name="LOGIN_AGG" Type="varchar" MaxLength="10" />
+          <Property Name="DATA_NEWS" Type="datetime" />
+          <Property Name="TITOLO" Type="nvarchar" MaxLength="255" />
+          <Property Name="TESTO" Type="nvarchar" MaxLength="2000" />
+          <Property Name="IMMAGINE" Type="nvarchar" MaxLength="255" />
+          <Property Name="IMMAGINE_PREV" Type="nvarchar" MaxLength="255" />
+          <Property Name="LINK_ESTERNO" Type="nvarchar" MaxLength="255" />
+          <Property Name="ABILITATO" Type="int" />
+          <Property Name="FL_HOME" Type="int" />
+          <Property Name="TITOLO_BREVE" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityContainer Name="absoluteModelStoreContainer">
+          <EntitySet Name="APP_BANNER_V" EntityType="Self.APP_BANNER_V" store:Type="Views" store:Schema="MSSql27442">
+            <DefiningQuery>SELECT 
+    [APP_BANNER_V].[ID] AS [ID], 
+    [APP_BANNER_V].[DATA_INS] AS [DATA_INS], 
+    [APP_BANNER_V].[LOGIN_INS] AS [LOGIN_INS], 
+    [APP_BANNER_V].[DATA_AGG] AS [DATA_AGG], 
+    [APP_BANNER_V].[LOGIN_AGG] AS [LOGIN_AGG], 
+    [APP_BANNER_V].[TITOLO] AS [TITOLO], 
+    [APP_BANNER_V].[IMMAGINE] AS [IMMAGINE], 
+    [APP_BANNER_V].[IMMAGINE_PREV] AS [IMMAGINE_PREV], 
+    [APP_BANNER_V].[LINK_ESTERNO] AS [LINK_ESTERNO], 
+    [APP_BANNER_V].[ABILITATO] AS [ABILITATO]
+    FROM [MSSql27442].[APP_BANNER_V] AS [APP_BANNER_V]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="APP_COMPETIZIONI_EVENTI_V" EntityType="Self.APP_COMPETIZIONI_EVENTI_V" store:Type="Views" store:Schema="MSSql27442">
+            <DefiningQuery>SELECT 
+    [APP_COMPETIZIONI_EVENTI_V].[ID] AS [ID], 
+    [APP_COMPETIZIONI_EVENTI_V].[NOME] AS [NOME], 
+    [APP_COMPETIZIONI_EVENTI_V].[ANNO] AS [ANNO], 
+    [APP_COMPETIZIONI_EVENTI_V].[ID_EVENTI] AS [ID_EVENTI], 
+    [APP_COMPETIZIONI_EVENTI_V].[NOME_EVENTI] AS [NOME_EVENTI], 
+    [APP_COMPETIZIONI_EVENTI_V].[TIPO_GIRONE] AS [TIPO_GIRONE]
+    FROM [MSSql27442].[APP_COMPETIZIONI_EVENTI_V] AS [APP_COMPETIZIONI_EVENTI_V]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="APP_ELENCO_SQUADRE_V" EntityType="Self.APP_ELENCO_SQUADRE_V" store:Type="Views" store:Schema="MSSql27442">
+            <DefiningQuery>SELECT 
+    [APP_ELENCO_SQUADRE_V].[ID_SQUADRA] AS [ID_SQUADRA], 
+    [APP_ELENCO_SQUADRE_V].[NOME] AS [NOME]
+    FROM [MSSql27442].[APP_ELENCO_SQUADRE_V] AS [APP_ELENCO_SQUADRE_V]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="APP_INCONTRI_V" EntityType="Self.APP_INCONTRI_V" store:Type="Views" store:Schema="MSSql27442">
+            <DefiningQuery>SELECT 
+    [APP_INCONTRI_V].[ID_COMPETIZIONE] AS [ID_COMPETIZIONE], 
+    [APP_INCONTRI_V].[NOME] AS [NOME], 
+    [APP_INCONTRI_V].[NOME_EVENTO] AS [NOME_EVENTO], 
+    [APP_INCONTRI_V].[ID_EVENTO] AS [ID_EVENTO], 
+    [APP_INCONTRI_V].[TIPO_EVENTO] AS [TIPO_EVENTO], 
+    [APP_INCONTRI_V].[ORDINE_CLASSIFICA] AS [ORDINE_CLASSIFICA], 
+    [APP_INCONTRI_V].[ID_INCONTRO] AS [ID_INCONTRO], 
+    [APP_INCONTRI_V].[DATA_EVENTO] AS [DATA_EVENTO], 
+    [APP_INCONTRI_V].[DATA_POSTICIPO] AS [DATA_POSTICIPO], 
+    [APP_INCONTRI_V].[ID_CAMPO] AS [ID_CAMPO], 
+    [APP_INCONTRI_V].[ID_CAMPO_RECUPERO] AS [ID_CAMPO_RECUPERO], 
+    [APP_INCONTRI_V].[ORA] AS [ORA], 
+    [APP_INCONTRI_V].[ORA_POSTICIPO] AS [ORA_POSTICIPO], 
+    [APP_INCONTRI_V].[ID_SQUADRA_1] AS [ID_SQUADRA_1], 
+    [APP_INCONTRI_V].[ID_SQUADRA_2] AS [ID_SQUADRA_2], 
+    [APP_INCONTRI_V].[ID_CALENDARIO] AS [ID_CALENDARIO], 
+    [APP_INCONTRI_V].[NOME_CALENDARIO] AS [NOME_CALENDARIO]
+    FROM [MSSql27442].[APP_INCONTRI_V] AS [APP_INCONTRI_V]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="APP_NEWS_V" EntityType="Self.APP_NEWS_V" store:Type="Views" store:Schema="MSSql27442">
+            <DefiningQuery>SELECT 
+    [APP_NEWS_V].[ID] AS [ID], 
+    [APP_NEWS_V].[DATA_INS] AS [DATA_INS], 
+    [APP_NEWS_V].[LOGIN_INS] AS [LOGIN_INS], 
+    [APP_NEWS_V].[DATA_AGG] AS [DATA_AGG], 
+    [APP_NEWS_V].[LOGIN_AGG] AS [LOGIN_AGG], 
+    [APP_NEWS_V].[DATA_NEWS] AS [DATA_NEWS], 
+    [APP_NEWS_V].[TITOLO] AS [TITOLO], 
+    [APP_NEWS_V].[TESTO] AS [TESTO], 
+    [APP_NEWS_V].[IMMAGINE] AS [IMMAGINE], 
+    [APP_NEWS_V].[IMMAGINE_PREV] AS [IMMAGINE_PREV], 
+    [APP_NEWS_V].[LINK_ESTERNO] AS [LINK_ESTERNO], 
+    [APP_NEWS_V].[ABILITATO] AS [ABILITATO], 
+    [APP_NEWS_V].[FL_HOME] AS [FL_HOME], 
+    [APP_NEWS_V].[TITOLO_BREVE] AS [TITOLO_BREVE]
+    FROM [MSSql27442].[APP_NEWS_V] AS [APP_NEWS_V]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="absoluteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="APP_BANNER_V">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATA_INS" Type="DateTime" Precision="3" />
+          <Property Name="LOGIN_INS" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DATA_AGG" Type="DateTime" Precision="3" />
+          <Property Name="LOGIN_AGG" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="TITOLO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IMMAGINE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IMMAGINE_PREV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LINK_ESTERNO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ABILITATO" Type="Int32" />
+        </EntityType>
+        <EntityType Name="APP_COMPETIZIONI_EVENTI_V">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="NOME" />
+            <PropertyRef Name="ANNO" />
+            <PropertyRef Name="ID_EVENTI" />
+            <PropertyRef Name="NOME_EVENTI" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="NOME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ANNO" Type="Int32" Nullable="false" />
+          <Property Name="ID_EVENTI" Type="Int32" Nullable="false" />
+          <Property Name="NOME_EVENTI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TIPO_GIRONE" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="APP_ELENCO_SQUADRE_V">
+          <Key>
+            <PropertyRef Name="ID_SQUADRA" />
+          </Key>
+          <Property Name="ID_SQUADRA" Type="Int32" Nullable="false" />
+          <Property Name="NOME" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="APP_INCONTRI_V">
+          <Key>
+            <PropertyRef Name="ID_COMPETIZIONE" />
+            <PropertyRef Name="NOME" />
+            <PropertyRef Name="NOME_EVENTO" />
+            <PropertyRef Name="ID_EVENTO" />
+            <PropertyRef Name="ID_INCONTRO" />
+            <PropertyRef Name="ID_CAMPO" />
+            <PropertyRef Name="ID_SQUADRA_1" />
+            <PropertyRef Name="ID_SQUADRA_2" />
+            <PropertyRef Name="ID_CALENDARIO" />
+            <PropertyRef Name="NOME_CALENDARIO" />
+          </Key>
+          <Property Name="ID_COMPETIZIONE" Type="Int32" Nullable="false" />
+          <Property Name="NOME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NOME_EVENTO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID_EVENTO" Type="Int32" Nullable="false" />
+          <Property Name="TIPO_EVENTO" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="ORDINE_CLASSIFICA" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="ID_INCONTRO" Type="Int32" Nullable="false" />
+          <Property Name="DATA_EVENTO" Type="DateTime" Precision="3" />
+          <Property Name="DATA_POSTICIPO" Type="DateTime" Precision="3" />
+          <Property Name="ID_CAMPO" Type="Int32" Nullable="false" />
+          <Property Name="ID_CAMPO_RECUPERO" Type="Int32" />
+          <Property Name="ORA" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ORA_POSTICIPO" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ID_SQUADRA_1" Type="Int32" Nullable="false" />
+          <Property Name="ID_SQUADRA_2" Type="Int32" Nullable="false" />
+          <Property Name="ID_CALENDARIO" Type="Int32" Nullable="false" />
+          <Property Name="NOME_CALENDARIO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="APP_NEWS_V">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATA_INS" Type="DateTime" Precision="3" />
+          <Property Name="LOGIN_INS" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DATA_AGG" Type="DateTime" Precision="3" />
+          <Property Name="LOGIN_AGG" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DATA_NEWS" Type="DateTime" Precision="3" />
+          <Property Name="TITOLO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TESTO" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="IMMAGINE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IMMAGINE_PREV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LINK_ESTERNO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ABILITATO" Type="Int32" />
+          <Property Name="FL_HOME" Type="Int32" />
+          <Property Name="TITOLO_BREVE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="absoluteEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="APP_BANNER_V" EntityType="Self.APP_BANNER_V" />
+          <EntitySet Name="APP_COMPETIZIONI_EVENTI_V" EntityType="Self.APP_COMPETIZIONI_EVENTI_V" />
+          <EntitySet Name="APP_ELENCO_SQUADRE_V" EntityType="Self.APP_ELENCO_SQUADRE_V" />
+          <EntitySet Name="APP_INCONTRI_V" EntityType="Self.APP_INCONTRI_V" />
+          <EntitySet Name="APP_NEWS_V" EntityType="Self.APP_NEWS_V" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="absoluteModelStoreContainer" CdmEntityContainer="absoluteEntities">
+          <EntitySetMapping Name="APP_BANNER_V">
+            <EntityTypeMapping TypeName="absoluteModel.APP_BANNER_V">
+              <MappingFragment StoreEntitySet="APP_BANNER_V">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DATA_INS" ColumnName="DATA_INS" />
+                <ScalarProperty Name="LOGIN_INS" ColumnName="LOGIN_INS" />
+                <ScalarProperty Name="DATA_AGG" ColumnName="DATA_AGG" />
+                <ScalarProperty Name="LOGIN_AGG" ColumnName="LOGIN_AGG" />
+                <ScalarProperty Name="TITOLO" ColumnName="TITOLO" />
+                <ScalarProperty Name="IMMAGINE" ColumnName="IMMAGINE" />
+                <ScalarProperty Name="IMMAGINE_PREV" ColumnName="IMMAGINE_PREV" />
+                <ScalarProperty Name="LINK_ESTERNO" ColumnName="LINK_ESTERNO" />
+                <ScalarProperty Name="ABILITATO" ColumnName="ABILITATO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APP_COMPETIZIONI_EVENTI_V">
+            <EntityTypeMapping TypeName="absoluteModel.APP_COMPETIZIONI_EVENTI_V">
+              <MappingFragment StoreEntitySet="APP_COMPETIZIONI_EVENTI_V">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="ANNO" ColumnName="ANNO" />
+                <ScalarProperty Name="ID_EVENTI" ColumnName="ID_EVENTI" />
+                <ScalarProperty Name="NOME_EVENTI" ColumnName="NOME_EVENTI" />
+                <ScalarProperty Name="TIPO_GIRONE" ColumnName="TIPO_GIRONE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APP_ELENCO_SQUADRE_V">
+            <EntityTypeMapping TypeName="absoluteModel.APP_ELENCO_SQUADRE_V">
+              <MappingFragment StoreEntitySet="APP_ELENCO_SQUADRE_V">
+                <ScalarProperty Name="ID_SQUADRA" ColumnName="ID_SQUADRA" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APP_INCONTRI_V">
+            <EntityTypeMapping TypeName="absoluteModel.APP_INCONTRI_V">
+              <MappingFragment StoreEntitySet="APP_INCONTRI_V">
+                <ScalarProperty Name="ID_COMPETIZIONE" ColumnName="ID_COMPETIZIONE" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="NOME_EVENTO" ColumnName="NOME_EVENTO" />
+                <ScalarProperty Name="ID_EVENTO" ColumnName="ID_EVENTO" />
+                <ScalarProperty Name="TIPO_EVENTO" ColumnName="TIPO_EVENTO" />
+                <ScalarProperty Name="ORDINE_CLASSIFICA" ColumnName="ORDINE_CLASSIFICA" />
+                <ScalarProperty Name="ID_INCONTRO" ColumnName="ID_INCONTRO" />
+                <ScalarProperty Name="DATA_EVENTO" ColumnName="DATA_EVENTO" />
+                <ScalarProperty Name="DATA_POSTICIPO" ColumnName="DATA_POSTICIPO" />
+                <ScalarProperty Name="ID_CAMPO" ColumnName="ID_CAMPO" />
+                <ScalarProperty Name="ID_CAMPO_RECUPERO" ColumnName="ID_CAMPO_RECUPERO" />
+                <ScalarProperty Name="ORA" ColumnName="ORA" />
+                <ScalarProperty Name="ORA_POSTICIPO" ColumnName="ORA_POSTICIPO" />
+                <ScalarProperty Name="ID_SQUADRA_1" ColumnName="ID_SQUADRA_1" />
+                <ScalarProperty Name="ID_SQUADRA_2" ColumnName="ID_SQUADRA_2" />
+                <ScalarProperty Name="ID_CALENDARIO" ColumnName="ID_CALENDARIO" />
+                <ScalarProperty Name="NOME_CALENDARIO" ColumnName="NOME_CALENDARIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APP_NEWS_V">
+            <EntityTypeMapping TypeName="absoluteModel.APP_NEWS_V">
+              <MappingFragment StoreEntitySet="APP_NEWS_V">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DATA_INS" ColumnName="DATA_INS" />
+                <ScalarProperty Name="LOGIN_INS" ColumnName="LOGIN_INS" />
+                <ScalarProperty Name="DATA_AGG" ColumnName="DATA_AGG" />
+                <ScalarProperty Name="LOGIN_AGG" ColumnName="LOGIN_AGG" />
+                <ScalarProperty Name="DATA_NEWS" ColumnName="DATA_NEWS" />
+                <ScalarProperty Name="TITOLO" ColumnName="TITOLO" />
+                <ScalarProperty Name="TESTO" ColumnName="TESTO" />
+                <ScalarProperty Name="IMMAGINE" ColumnName="IMMAGINE" />
+                <ScalarProperty Name="IMMAGINE_PREV" ColumnName="IMMAGINE_PREV" />
+                <ScalarProperty Name="LINK_ESTERNO" ColumnName="LINK_ESTERNO" />
+                <ScalarProperty Name="ABILITATO" ColumnName="ABILITATO" />
+                <ScalarProperty Name="FL_HOME" ColumnName="FL_HOME" />
+                <ScalarProperty Name="TITOLO_BREVE" ColumnName="TITOLO_BREVE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
