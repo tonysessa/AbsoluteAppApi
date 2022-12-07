@@ -5,6 +5,20 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="absoluteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="SQUADRE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATA_INS" Type="datetime" />
+          <Property Name="LOGIN_INS" Type="nvarchar" MaxLength="10" />
+          <Property Name="DATA_AGG" Type="datetime" />
+          <Property Name="LOGIN_AGG" Type="nvarchar" MaxLength="10" />
+          <Property Name="NOME" Type="nvarchar" MaxLength="150" />
+          <Property Name="DESCRIZIONE" Type="ntext" />
+          <Property Name="LOGO" Type="nvarchar" MaxLength="255" />
+          <Property Name="FOTO_SQUADRA" Type="nvarchar" MaxLength="255" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'absolute.MSSql27442.APP_BANNER_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="APP_BANNER_V">
@@ -121,6 +135,7 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
           <Property Name="TITOLO_BREVE" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityContainer Name="absoluteModelStoreContainer">
+          <EntitySet Name="SQUADRE" EntityType="Self.SQUADRE" Schema="MSSql27442" store:Type="Tables" />
           <EntitySet Name="APP_BANNER_V" EntityType="Self.APP_BANNER_V" store:Type="Views" store:Schema="MSSql27442">
             <DefiningQuery>SELECT 
     [APP_BANNER_V].[ID] AS [ID], 
@@ -301,6 +316,7 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
           <EntitySet Name="APP_INCONTRI_V" EntityType="Self.APP_INCONTRI_V" />
           <EntitySet Name="APP_NEWS_V" EntityType="Self.APP_NEWS_V" />
           <EntitySet Name="APP_LS_COMPETIZIONI_EVENTI_V" EntityType="absoluteModel.APP_LS_COMPETIZIONI_EVENTI_V" />
+          <EntitySet Name="SQUADRE" EntityType="absoluteModel.SQUADRE" />
         </EntityContainer>
         <EntityType Name="APP_LS_COMPETIZIONI_EVENTI_V">
           <Key>
@@ -316,6 +332,20 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
           <Property Name="ID_EVENTI" Type="Int32" Nullable="false" />
           <Property Name="NOME_EVENTI" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="TIPO_GIRONE" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SQUADRE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATA_INS" Type="DateTime" Precision="3" />
+          <Property Name="LOGIN_INS" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DATA_AGG" Type="DateTime" Precision="3" />
+          <Property Name="LOGIN_AGG" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="NOME" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DESCRIZIONE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LOGO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FOTO_SQUADRA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -411,6 +441,21 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
                 <ScalarProperty Name="ID_EVENTI" ColumnName="ID_EVENTI" />
                 <ScalarProperty Name="ANNO" ColumnName="ANNO" />
                 <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SQUADRE">
+            <EntityTypeMapping TypeName="absoluteModel.SQUADRE">
+              <MappingFragment StoreEntitySet="SQUADRE">
+                <ScalarProperty Name="FOTO_SQUADRA" ColumnName="FOTO_SQUADRA" />
+                <ScalarProperty Name="LOGO" ColumnName="LOGO" />
+                <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="LOGIN_AGG" ColumnName="LOGIN_AGG" />
+                <ScalarProperty Name="DATA_AGG" ColumnName="DATA_AGG" />
+                <ScalarProperty Name="LOGIN_INS" ColumnName="LOGIN_INS" />
+                <ScalarProperty Name="DATA_INS" ColumnName="DATA_INS" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

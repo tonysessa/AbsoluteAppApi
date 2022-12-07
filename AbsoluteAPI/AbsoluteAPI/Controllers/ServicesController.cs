@@ -10,6 +10,8 @@ using System.Xml;
 using static AbsoluteAPI.support.jsonObj;
 using AbsoluteAPI.support;
 using System.Configuration;
+using System.Text.RegularExpressions;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace AbsoluteAPI.Controllers
 {
@@ -138,7 +140,7 @@ namespace AbsoluteAPI.Controllers
 
             detailNews response = new detailNews();
             response.news = null;
-            
+
             try
             {
 
@@ -146,7 +148,7 @@ namespace AbsoluteAPI.Controllers
                 {
                     APP_NEWS_V x = ctx.APP_NEWS_V.Where(t => t.ID == idnews).FirstOrDefault();
 
-                    if (x!= null)
+                    if (x != null)
                     {
                         news s = new news();
                         s.id = x.ID;
@@ -247,17 +249,76 @@ namespace AbsoluteAPI.Controllers
 
                     using (absoluteEntities ctx = new absoluteEntities())
                     {
-                        var i = ctx.APP_INCONTRI_V.Where(t=>t.ID_SQUADRA_1 == id || t.ID_SQUADRA_2 == id)
-                            .GroupBy(t=>t.ID_COMPETIZIONE)
+
+                        SQUADRE s = ctx.SQUADRE.Where(t => t.ID == id).FirstOrDefault();
+                        if (s != null)
+                        {
+                            response.nome = s.NOME;
+                            response.id = id;
+
+                            var i = ctx.APP_INCONTRI_V.Where(t => t.ID_SQUADRA_1 == id || t.ID_SQUADRA_2 == id)
+                            .GroupBy(t => t.ID_COMPETIZIONE)
                             .Select(c => new
                             {
                                 name = c.FirstOrDefault().NOME,
-                                id = c.Key
+                                id = c.Key,
+                                elements = c.ToList()
                             })
-                            .OrderBy(t=>t.id)
+                            .OrderBy(t => t.id)
                             .AsQueryable();
+
+                            if (i.Count() > 0)
+                            {
+                                response.competizioni = new List<competizione>();
+                                foreach (var x in i)
+                                {
+                                    competizione c = new competizione();
+                                    c.id = x.id;
+                                    c.nome = x.name;
+
+                                    var listEvents = x.elements
+                                                        .GroupBy(y => y.ID_EVENTO)
+                                                        .Select(m => new
+                                                        {
+                                                            id_evento = m.Key,
+                                                            nome_evento = m.FirstOrDefault().NOME_EVENTO
+                                                        })
+                                                        .OrderBy(t => t.id_evento)
+                                                        .AsQueryable();
+
+                                    if (listEvents != null)
+                                    {
+                                        c.eventi = new List<evento>();
+                                        foreach (var z in listEvents)
+                                        {
+                                            evento e = new evento();
+                                            e.id = z.id_evento;
+                                            e.nome = z.nome_evento;
+                                            //
+                                            c.eventi.Add(e);
+                                        }
+                                    }
+
+                                    response.competizioni.Add(c);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            response.status = 99;
+                            response.message = constMsg._noSquadraDetail;
+                        }
                     }
+
+                    response.status = 1;
                 }
+                else
+                {
+                    response.status = 99;
+                    response.message = constMsg._noSquadraDetail;
+                }
+
+
             }
             catch (Exception ex)
             {

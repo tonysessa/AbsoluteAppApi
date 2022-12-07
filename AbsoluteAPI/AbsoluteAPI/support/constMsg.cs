@@ -15,5 +15,6 @@ namespace AbsoluteAPI.support
         public const string _noNews = "Nessuna News presente in archivio";
         public const string _noDetailNews = "News non presente in archivio";
         public const string _noBanners = "Nessun Banner presente in archivio";
+        public const string _noSquadraDetail = "Squadra non presente in archivio";
     }
 }

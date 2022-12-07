@@ -11,6 +11,7 @@
         <EntityTypeShape EntityType="absoluteModel.APP_INCONTRI_V" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="absoluteModel.APP_NEWS_V" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="absoluteModel.APP_LS_COMPETIZIONI_EVENTI_V" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="absoluteModel.SQUADRE" Width="1.5" PointX="3.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
