@@ -16,5 +16,8 @@ namespace AbsoluteAPI.support
         public const string _noDetailNews = "News non presente in archivio";
         public const string _noBanners = "Nessun Banner presente in archivio";
         public const string _noSquadraDetail = "Squadra non presente in archivio";
+        public const string _noGare = "Nessuna gara presente in archivio";
+        public const string _squadraVincente = "Vincente";
+        public const string _noDettaglio = "Dettaglio non disponibile";
     }
 }

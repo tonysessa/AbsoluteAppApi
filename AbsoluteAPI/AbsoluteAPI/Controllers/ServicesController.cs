@@ -12,6 +12,7 @@ using AbsoluteAPI.support;
 using System.Configuration;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices.ComTypes;
+using System.Security.Cryptography.Xml;
 
 namespace AbsoluteAPI.Controllers
 {
@@ -79,9 +80,10 @@ namespace AbsoluteAPI.Controllers
 
         [System.Web.Http.HttpGet]
         [System.Web.Http.ActionName("news")]
-        public elencoNews elencoNews(int? num)
+        public elencoNews elencoNews(int? num, int? flHome)
         {
             int numToResponse = num ?? 0;
+            int flagHome = flHome ?? 1;
             elencoNews response = new elencoNews();
             response.news = null;
             response.num = 0;
@@ -90,9 +92,14 @@ namespace AbsoluteAPI.Controllers
 
                 using (absoluteEntities ctx = new absoluteEntities())
                 {
-                    IQueryable<APP_NEWS_V> list = ctx.APP_NEWS_V.Where(t => t.FL_HOME == 1).OrderByDescending(t => t.DATA_NEWS);
+                    IQueryable<APP_NEWS_V> list = null;
+                    if (flagHome == 1)
+                        list = ctx.APP_NEWS_V.Where(t => t.FL_HOME == 1).OrderByDescending(t => t.DATA_NEWS);
+                    else
+                        list = ctx.APP_NEWS_V.OrderByDescending(t => t.DATA_NEWS);
+
                     if (numToResponse > 0)
-                        list = list.Where(t => t.FL_HOME == 1).Take(numToResponse);
+                        list = list.Take(numToResponse);
 
                     int Tot = list.Count();
                     if (Tot > 0)
@@ -330,5 +337,346 @@ namespace AbsoluteAPI.Controllers
             return response;
         }
 
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.ActionName("prossimeGare")]
+        public prossimeGare prossimeGare(int id)
+        {
+            prossimeGare response = new prossimeGare();
+            try
+            {
+                if (id > 0)
+                {
+                    using (absoluteEntities ctx = new absoluteEntities())
+                    {
+
+                        SQUADRE s = ctx.SQUADRE.Where(t => t.ID == id).FirstOrDefault();
+                        if (s != null)
+                        {
+
+                            string time = DateTime.Now.Hour.ToString().PadLeft(2, '0') + DateTime.Now.Minute.ToString().PadLeft(2, '0');
+                            List<Sp_ProssimeGare_Result> r = ctx.Sp_ProssimeGare(time, id).ToList();
+                            if (r.Count > 0)
+                            {
+
+
+                                var query = r.GroupBy(t => t.ID_COMPETIZIONE)
+                                                                            .Select(c => new
+                                                                            {
+                                                                                name = c.FirstOrDefault().NOME,
+                                                                                id = c.Key,
+                                                                                elements = c.ToList()
+                                                                            })
+                                                                    .OrderBy(t => t.id)
+                                                                    .AsQueryable();
+
+                                //prendo tutte le squadre che trovo
+                                IEnumerable<int> listSquadre = r.Select(t => t.ID_SQUADRA_1);
+                                listSquadre = listSquadre.Concat(r.Select(t => t.ID_SQUADRA_2)).Distinct();
+
+                                IQueryable<SQUADRE> squadre = ctx.SQUADRE.Where(sq => listSquadre.Contains(sq.ID)).AsQueryable();
+
+
+                                response.competizioni = new List<competizione>();
+                                foreach (var x in query)
+                                {
+                                    competizione c = new competizione();
+                                    c.id = x.id;
+                                    c.nome = x.name;
+
+                                    var listEvents = x.elements
+                                                        .GroupBy(y => y.ID_EVENTO)
+                                                        .Select(m => new
+                                                        {
+                                                            id_evento = m.Key,
+                                                            nome_evento = m.FirstOrDefault().NOME_EVENTO,
+                                                            incontri = m.ToList()
+                                                        })
+                                                        .OrderBy(t => t.id_evento)
+                                                        .AsQueryable();
+
+
+
+                                    if (listEvents != null)
+                                    {
+                                        c.eventi = new List<evento>();
+                                        foreach (var z in listEvents)
+                                        {
+                                            evento e = new evento();
+                                            e.id = z.id_evento;
+                                            e.nome = z.nome_evento;
+                                            //
+                                            if (z.incontri != null)
+                                            {
+
+
+                                                e.incontri = new List<incontro>();
+                                                foreach (var j in z.incontri)
+                                                {
+                                                    incontro i = new incontro();
+                                                    i.id = j.ID_INCONTRO;
+                                                    //
+                                                    #region squadre
+                                                    squadra s1 = new squadra();
+                                                    squadra s2 = new squadra();
+
+                                                    s1.id = j.ID_SQUADRA_1;
+                                                    if (s1.id > 0)
+                                                    {
+                                                        SQUADRE sq = squadre.Where(b => b.ID == s1.id).FirstOrDefault();
+                                                        s1.nome = sq.NomeSquadra;
+                                                        s1.logo = sq.LogoSquadra;
+
+                                                    }
+                                                    else
+                                                        s1.nome = constMsg._squadraVincente;
+
+                                                    s2.id = j.ID_SQUADRA_2;
+                                                    if (s2.id > 0)
+                                                    {
+                                                        SQUADRE sq = squadre.Where(b => b.ID == s2.id).FirstOrDefault();
+                                                        s2.nome = sq.NomeSquadra;
+                                                        s2.logo = sq.LogoSquadra;
+
+                                                    }
+                                                    else
+                                                        s2.nome = constMsg._squadraVincente;
+
+                                                    i.squadra1 = s1;
+                                                    i.squadra2 = s2;
+                                                    #endregion
+                                                    #region campo
+                                                    campo c1 = new campo();
+                                                    c1.id = j.ID_CAMPO;
+                                                    if (j.ID_CAMPO_RECUPERO != 0 && !string.IsNullOrEmpty(j.ID_CAMPO_RECUPERO.ToString()))
+                                                        c1.id = (int)j.ID_CAMPO_RECUPERO;
+                                                    c1.nome = ctx.CAMPI.Where(t => t.ID == c1.id).FirstOrDefault().NOMECAMPO;
+                                                    i.campo = c1;
+                                                    #endregion
+                                                    #region data e ora
+                                                    i.data = j.DATA_POSTICIPO != null ? ((DateTime)j.DATA_POSTICIPO).ToString("dd/MM/yyyy") : ((DateTime)j.DATA_EVENTO).ToString("dd/MM/yyyy");
+                                                    i.ora = j.ORA_POSTICIPO != null ? j.ORA_POSTICIPO : j.ORA;
+                                                    #endregion
+                                                    #region risultati e live
+                                                    i.risultato1 = "-";
+                                                    i.risultato2 = "-";
+                                                    i.flLive = false;
+                                                    #endregion
+
+                                                    e.incontri.Add(i);
+                                                }
+                                            }
+                                            c.eventi.Add(e);
+                                        }
+                                    }
+                                    response.competizioni.Add(c);
+                                    response.status = 1;
+                                }
+
+                            }
+                            else
+                            {
+                                response.status = 99;
+                                response.message = constMsg._noGare;
+                            }
+                        }
+                        else
+                        {
+                            response.status = 99;
+                            response.message = constMsg._noSquadraDetail;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = -1;
+                response.messageOri = ex.Message;
+                response.message = constMsg._genericError;
+            }
+
+            return response;
+        }
+
+
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.ActionName("dettaglioEvento")]
+        public dettaglioEvento dettaglioEvento(int idsquadra, int idEvento)
+        {
+            dettaglioEvento response = new dettaglioEvento();
+            try
+            {
+                if (idsquadra > 0 && idEvento > 0)
+                {
+                }
+                else
+                {
+                    response.status = 99;
+                    response.message = constMsg._noDettaglio;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = -1;
+                response.messageOri = ex.Message;
+                response.message = constMsg._genericError;
+            }
+
+            return response;
+        }
+
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.ActionName("dettaglioGara")]
+        public dettaglioGara dettaglioGara(int id)
+        {
+            dettaglioGara response = new dettaglioGara();
+            try
+            {
+                if (id > 0)
+                {
+                    using (absoluteEntities ctx = new absoluteEntities())
+                    {
+                        APP_INCONTRI_V i = ctx.APP_INCONTRI_V.Where(t => t.ID_INCONTRO == id).FirstOrDefault();
+                        if (i != null)
+                        {
+                            IQueryable<SQUADRE> squadre = ctx.SQUADRE.Where(t => t.ID == i.ID_SQUADRA_1 || t.ID == i.ID_SQUADRA_2).AsQueryable();
+                            IQueryable<CAMPI> campi = ctx.CAMPI.Where(t => t.ID == i.ID_CAMPO || t.ID == i.ID_CAMPO_RECUPERO).AsQueryable();
+
+                            competizione cmp = new competizione();
+
+                            cmp.id = i.ID_COMPETIZIONE;
+                            cmp.nome = i.NOME;
+                            cmp.eventi = new List<evento>();
+
+                            evento e = new evento();
+                            e.id = i.ID_EVENTO;
+                            e.nome = i.NOME_EVENTO;
+                            e.incontri = new List<incontro>();
+
+                            incontro ic = new incontro();
+                            ic.id = i.ID_INCONTRO;
+
+                            ic.calendario = i.NOME_CALENDARIO;
+                            #region squadre
+                            squadra s1 = new squadra();
+                            squadra s2 = new squadra();
+
+                            s1.id = i.ID_SQUADRA_1;
+                            if (s1.id > 0)
+                            {
+                                SQUADRE sq = squadre.Where(b => b.ID == s1.id).FirstOrDefault();
+                                s1.nome = sq.NomeSquadra;
+                                s1.logo = sq.LogoSquadra;
+
+                            }
+                            else
+                                s1.nome = constMsg._squadraVincente;
+
+                            s2.id = i.ID_SQUADRA_2;
+                            if (s2.id > 0)
+                            {
+                                SQUADRE sq = squadre.Where(b => b.ID == s2.id).FirstOrDefault();
+                                s2.nome = sq.NomeSquadra;
+                                s2.logo = sq.LogoSquadra;
+
+                            }
+                            else
+                                s2.nome = constMsg._squadraVincente;
+
+                            ic.squadra1 = s1;
+                            ic.squadra2 = s2;
+                            #endregion
+                            #region campo
+                            campo c1 = new campo();
+                            c1.id = i.ID_CAMPO;
+                            if (i.ID_CAMPO_RECUPERO != 0 && !string.IsNullOrEmpty(i.ID_CAMPO_RECUPERO.ToString()))
+                                c1.id = (int)i.ID_CAMPO_RECUPERO;
+                            CAMPI campo = campi.Where(t => t.ID == c1.id).FirstOrDefault();
+                            c1.nome = campo.NOMECAMPO;
+
+                            if (!string.IsNullOrEmpty("" + campo.GMAP))
+                            {
+                                string gmap = campo.GMAP.ToString().Replace("&amp;ll=", "&ll=");
+                                int index = gmap.IndexOf("&ll=");
+                                if (index > 0)
+                                {
+                                    gmap = gmap.Substring(index + 4, gmap.Length - (index + 4));
+                                    index = gmap.IndexOf("&");
+                                    if (index > 0)
+                                    {
+                                        char[] separator = new char[] { ',' };
+                                        string[] strArray = gmap.Substring(0, index).Split(separator);
+                                        if (strArray.Length != 0)
+                                        {
+                                            c1.googleLat = strArray[0];
+                                            c1.googleLon = strArray[1];
+                                        }
+                                    }
+                                }
+                            }
+
+                            ic.campo = c1;
+                            #endregion
+                            #region data e ora
+                            ic.data = i.DATA_POSTICIPO != null ? ((DateTime)i.DATA_POSTICIPO).ToString("dd/MM/yyyy") : ((DateTime)i.DATA_EVENTO).ToString("dd/MM/yyyy");
+                            ic.ora = i.ORA_POSTICIPO != null ? i.ORA_POSTICIPO : i.ORA;
+                            #endregion
+                            #region risultati e live
+                            LS_INCONTRI ls = ctx.LS_INCONTRI.Where(t => t.ID_INCONTRO == id && t.ABILITATO == 1).FirstOrDefault();
+                            if (ls == null)
+                            {
+
+                                ic.risultato1 = "-";
+                                ic.risultato2 = "-";
+                                ic.flLive = false;
+                            }
+                            else
+                            {
+                                ic.flLive = ls.FL_LIVE == 1 ? true : false;
+                                ic.risultato1 = ls.FL_LIVE == 1 ? "0" : "-";
+                                ic.risultato2 = ls.FL_LIVE == 1 ? "0" : "-";
+
+
+                                ic.risultato1 = ls.PUNTEGGIO_1 != null ? ls.PUNTEGGIO_1.ToString() : "0";
+                                ic.risultato2 = ls.PUNTEGGIO_2 != null ? ls.PUNTEGGIO_2.ToString() : "0";
+                            }
+
+                            INCONTRI_RISULTATI_V ir = ctx.INCONTRI_RISULTATI_V.Where(t => t.ID == id).FirstOrDefault();
+                            if (ir != null)
+                            {
+                                ic.risultato1 = ir.PUNTEGGIO_1.ToString();
+                                ic.risultato2 = ir.PUNTEGGIO_2.ToString();
+                            }
+
+                            #endregion
+
+                            e.incontri.Add(ic);
+                            cmp.eventi.Add(e);
+
+
+                            response.competizione = cmp;
+                            response.status = 1;
+                        }
+                        else
+                        {
+                            response.status = 99;
+                            response.message = constMsg._noDettaglio;
+                        }
+                    }
+                }
+                else
+                {
+                    response.status = 99;
+                    response.message = constMsg._noDettaglio;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.status = -1;
+                response.messageOri = ex.Message;
+                response.message = constMsg._genericError;
+            }
+
+            return response;
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace AbsoluteAPI.support
         }
 
 
-        public class elencoNews: genericResponse
+        public class elencoNews : genericResponse
         {
             public int num { get; set; }
             public List<news> news { get; set; }
@@ -48,10 +48,10 @@ namespace AbsoluteAPI.support
             public string testo_share { get; set; }
         }
 
-        public class detailNews: genericResponse
+        public class detailNews : genericResponse
         {
             public news news { get; set; }
-            
+
         }
 
 
@@ -76,7 +76,7 @@ namespace AbsoluteAPI.support
             public int id { get; set; }
             public string nome { get; set; }
             public List<competizione> competizioni { get; set; }
-         }
+        }
 
         public class competizione
         {
@@ -88,6 +88,45 @@ namespace AbsoluteAPI.support
         {
             public int id { get; set; }
             public string nome { get; set; }
+            public List<incontro> incontri { get; set; }
+        }
+
+        public class prossimeGare: genericResponse
+        {
+            public List<competizione> competizioni { get; set; }
+        }
+
+        public class incontro
+        {
+            public int id { get; set; }
+            public string calendario { get; set; }
+            public squadra squadra1 { get; set; }
+            public squadra squadra2 { get; set; }
+            public campo campo { get; set; }
+            public string data { get; set; }
+            public string ora { get; set; }
+            public string risultato1 { get; set; }
+            public string risultato2 { get; set; }
+            public bool flLive { get; set; }
+
+        }
+
+        public class campo
+        {
+            public int id { get; set; }
+            public string nome { get; set; }
+            public string googleLat { get; set; }
+            public string googleLon { get; set; }
+        }
+
+        public class dettaglioEvento:genericResponse
+        {
+
+        }
+
+        public class dettaglioGara : genericResponse
+        {
+            public competizione competizione { get; set; }
         }
     }
 }

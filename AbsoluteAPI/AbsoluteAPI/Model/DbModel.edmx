@@ -5,6 +5,40 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="absoluteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CAMPI">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATA_INS" Type="datetime" />
+          <Property Name="LOGIN_INS" Type="nvarchar" MaxLength="10" />
+          <Property Name="DATA_AGG" Type="datetime" />
+          <Property Name="LOGIN_AGG" Type="nvarchar" MaxLength="10" />
+          <Property Name="NOMECAMPO" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="CITTA" Type="nvarchar" MaxLength="150" />
+          <Property Name="DESCRIZIONE" Type="ntext" />
+          <Property Name="STATO" Type="int" Nullable="false" />
+          <Property Name="LATITUDINE_GMAP" Type="nvarchar" MaxLength="150" />
+          <Property Name="LONGITUDINE_GMAP" Type="nvarchar" MaxLength="150" />
+          <Property Name="ZOOM_GMAP" Type="nvarchar" MaxLength="3" />
+          <Property Name="GMAP" Type="ntext" />
+          <Property Name="CONVENZIONATO" Type="nvarchar" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="LS_INCONTRI">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DATA_INS" Type="datetime" />
+          <Property Name="LOGIN_INS" Type="nvarchar" MaxLength="255" />
+          <Property Name="DATA_AGG" Type="datetime" />
+          <Property Name="LOGIN_AGG" Type="nvarchar" MaxLength="255" />
+          <Property Name="ID_INCONTRO" Type="int" Nullable="false" />
+          <Property Name="PUNTEGGIO_1" Type="int" />
+          <Property Name="PUNTEGGIO_2" Type="int" />
+          <Property Name="FL_LIVE" Type="int" Nullable="false" />
+          <Property Name="ABILITATO" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="SQUADRE">
           <Key>
             <PropertyRef Name="ID" />
@@ -134,7 +168,56 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
           <Property Name="FL_HOME" Type="int" />
           <Property Name="TITOLO_BREVE" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'absolute.MSSql27442.INCONTRI_RISULTATI_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="INCONTRI_RISULTATI_V">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ID_CALENDARIO" />
+            <PropertyRef Name="ID_SQUADRA_1" />
+            <PropertyRef Name="ID_SQUADRA_2" />
+            <PropertyRef Name="ID_CAMPO" />
+            <PropertyRef Name="STATO" />
+            <PropertyRef Name="ESCLUDI_DESIGNATORE" />
+            <PropertyRef Name="STATO_RISULTATO" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="DATA_INS" Type="datetime" />
+          <Property Name="LOGIN_INS" Type="nvarchar" MaxLength="10" />
+          <Property Name="DATA_AGG" Type="datetime" />
+          <Property Name="LOGIN_AGG" Type="nvarchar" MaxLength="10" />
+          <Property Name="DATA_EVENTO" Type="datetime" />
+          <Property Name="ORA" Type="nvarchar" MaxLength="5" />
+          <Property Name="DATA_POSTICIPO" Type="datetime" />
+          <Property Name="ID_CALENDARIO" Type="int" Nullable="false" />
+          <Property Name="NOTE" Type="ntext" />
+          <Property Name="ID_SQUADRA_1" Type="int" Nullable="false" />
+          <Property Name="ID_SQUADRA_2" Type="int" Nullable="false" />
+          <Property Name="ID_CAMPO" Type="int" Nullable="false" />
+          <Property Name="STATO" Type="int" Nullable="false" />
+          <Property Name="NOTE_AMMINISTRATORI" Type="ntext" />
+          <Property Name="ORA_POSTICIPO" Type="nvarchar" MaxLength="5" />
+          <Property Name="ID_ARBITRO" Type="int" />
+          <Property Name="TOSTA" Type="int" />
+          <Property Name="CONFERMA_ARBITRO" Type="int" />
+          <Property Name="CONFERMA_STATISTICHE" Type="int" />
+          <Property Name="NOTE_REFERTO_SITO" Type="ntext" />
+          <Property Name="ID_CAMPO_RECUPERO" Type="int" />
+          <Property Name="TESTO_SEGNALAZIONE_ARBITRI" Type="ntext" />
+          <Property Name="ESCLUDI_DESIGNATORE" Type="bit" Nullable="false" />
+          <Property Name="OFC_CalendarioGiornate_ID" Type="int" />
+          <Property Name="PUNTEGGIO_1" Type="int" />
+          <Property Name="PUNTEGGIO_2" Type="int" />
+          <Property Name="SCHEDINA" Type="char" MaxLength="1" />
+          <Property Name="STATO_RISULTATO" Type="int" Nullable="false" />
+        </EntityType>
+        <Function Name="Sp_ProssimeGare" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="MSSql27442">
+          <Parameter Name="time" Type="nvarchar" Mode="In" />
+          <Parameter Name="idsquadra" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="absoluteModelStoreContainer">
+          <EntitySet Name="CAMPI" EntityType="Self.CAMPI" Schema="MSSql27442" store:Type="Tables" />
+          <EntitySet Name="LS_INCONTRI" EntityType="Self.LS_INCONTRI" Schema="MSSql27442" store:Type="Tables" />
           <EntitySet Name="SQUADRE" EntityType="Self.SQUADRE" Schema="MSSql27442" store:Type="Tables" />
           <EntitySet Name="APP_BANNER_V" EntityType="Self.APP_BANNER_V" store:Type="Views" store:Schema="MSSql27442">
             <DefiningQuery>SELECT 
@@ -215,6 +298,39 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
     [APP_NEWS_V].[FL_HOME] AS [FL_HOME], 
     [APP_NEWS_V].[TITOLO_BREVE] AS [TITOLO_BREVE]
     FROM [MSSql27442].[APP_NEWS_V] AS [APP_NEWS_V]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="INCONTRI_RISULTATI_V" EntityType="Self.INCONTRI_RISULTATI_V" store:Type="Views" store:Schema="MSSql27442">
+            <DefiningQuery>SELECT 
+    [INCONTRI_RISULTATI_V].[ID] AS [ID], 
+    [INCONTRI_RISULTATI_V].[DATA_INS] AS [DATA_INS], 
+    [INCONTRI_RISULTATI_V].[LOGIN_INS] AS [LOGIN_INS], 
+    [INCONTRI_RISULTATI_V].[DATA_AGG] AS [DATA_AGG], 
+    [INCONTRI_RISULTATI_V].[LOGIN_AGG] AS [LOGIN_AGG], 
+    [INCONTRI_RISULTATI_V].[DATA_EVENTO] AS [DATA_EVENTO], 
+    [INCONTRI_RISULTATI_V].[ORA] AS [ORA], 
+    [INCONTRI_RISULTATI_V].[DATA_POSTICIPO] AS [DATA_POSTICIPO], 
+    [INCONTRI_RISULTATI_V].[ID_CALENDARIO] AS [ID_CALENDARIO], 
+    [INCONTRI_RISULTATI_V].[NOTE] AS [NOTE], 
+    [INCONTRI_RISULTATI_V].[ID_SQUADRA_1] AS [ID_SQUADRA_1], 
+    [INCONTRI_RISULTATI_V].[ID_SQUADRA_2] AS [ID_SQUADRA_2], 
+    [INCONTRI_RISULTATI_V].[ID_CAMPO] AS [ID_CAMPO], 
+    [INCONTRI_RISULTATI_V].[STATO] AS [STATO], 
+    [INCONTRI_RISULTATI_V].[NOTE_AMMINISTRATORI] AS [NOTE_AMMINISTRATORI], 
+    [INCONTRI_RISULTATI_V].[ORA_POSTICIPO] AS [ORA_POSTICIPO], 
+    [INCONTRI_RISULTATI_V].[ID_ARBITRO] AS [ID_ARBITRO], 
+    [INCONTRI_RISULTATI_V].[TOSTA] AS [TOSTA], 
+    [INCONTRI_RISULTATI_V].[CONFERMA_ARBITRO] AS [CONFERMA_ARBITRO], 
+    [INCONTRI_RISULTATI_V].[CONFERMA_STATISTICHE] AS [CONFERMA_STATISTICHE], 
+    [INCONTRI_RISULTATI_V].[NOTE_REFERTO_SITO] AS [NOTE_REFERTO_SITO], 
+    [INCONTRI_RISULTATI_V].[ID_CAMPO_RECUPERO] AS [ID_CAMPO_RECUPERO], 
+    [INCONTRI_RISULTATI_V].[TESTO_SEGNALAZIONE_ARBITRI] AS [TESTO_SEGNALAZIONE_ARBITRI], 
+    [INCONTRI_RISULTATI_V].[ESCLUDI_DESIGNATORE] AS [ESCLUDI_DESIGNATORE], 
+    [INCONTRI_RISULTATI_V].[OFC_CalendarioGiornate_ID] AS [OFC_CalendarioGiornate_ID], 
+    [INCONTRI_RISULTATI_V].[PUNTEGGIO_1] AS [PUNTEGGIO_1], 
+    [INCONTRI_RISULTATI_V].[PUNTEGGIO_2] AS [PUNTEGGIO_2], 
+    [INCONTRI_RISULTATI_V].[SCHEDINA] AS [SCHEDINA], 
+    [INCONTRI_RISULTATI_V].[STATO_RISULTATO] AS [STATO_RISULTATO]
+    FROM [MSSql27442].[INCONTRI_RISULTATI_V] AS [INCONTRI_RISULTATI_V]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -317,6 +433,13 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
           <EntitySet Name="APP_NEWS_V" EntityType="Self.APP_NEWS_V" />
           <EntitySet Name="APP_LS_COMPETIZIONI_EVENTI_V" EntityType="absoluteModel.APP_LS_COMPETIZIONI_EVENTI_V" />
           <EntitySet Name="SQUADRE" EntityType="absoluteModel.SQUADRE" />
+          <FunctionImport Name="Sp_ProssimeGare" ReturnType="Collection(absoluteModel.Sp_ProssimeGare_Result)">
+            <Parameter Name="time" Mode="In" Type="String" />
+            <Parameter Name="idsquadra" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="CAMPI" EntityType="absoluteModel.CAMPI" />
+          <EntitySet Name="LS_INCONTRI" EntityType="absoluteModel.LS_INCONTRI" />
+          <EntitySet Name="INCONTRI_RISULTATI_V" EntityType="absoluteModel.INCONTRI_RISULTATI_V" />
         </EntityContainer>
         <EntityType Name="APP_LS_COMPETIZIONI_EVENTI_V">
           <Key>
@@ -346,6 +469,100 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
           <Property Name="DESCRIZIONE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LOGO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="FOTO_SQUADRA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="Sp_ProssimeGare_Result">
+          <Property Type="Int32" Name="ID_COMPETIZIONE" Nullable="false" />
+          <Property Type="String" Name="NOME" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="NOME_EVENTO" Nullable="false" MaxLength="255" />
+          <Property Type="Int32" Name="ID_EVENTO" Nullable="false" />
+          <Property Type="String" Name="TIPO_EVENTO" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ORDINE_CLASSIFICA" Nullable="true" MaxLength="1" />
+          <Property Type="Int32" Name="ID_INCONTRO" Nullable="false" />
+          <Property Type="DateTime" Name="DATA_EVENTO" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="DATA_POSTICIPO" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="ID_CAMPO" Nullable="false" />
+          <Property Type="Int32" Name="ID_CAMPO_RECUPERO" Nullable="true" />
+          <Property Type="String" Name="ORA" Nullable="true" MaxLength="5" />
+          <Property Type="String" Name="ORA_POSTICIPO" Nullable="true" MaxLength="5" />
+          <Property Type="Int32" Name="ID_SQUADRA_1" Nullable="false" />
+          <Property Type="Int32" Name="ID_SQUADRA_2" Nullable="false" />
+          <Property Type="Int32" Name="ID_CALENDARIO" Nullable="false" />
+          <Property Type="String" Name="NOME_CALENDARIO" Nullable="false" MaxLength="255" />
+        </ComplexType>
+        <EntityType Name="CAMPI">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATA_INS" Type="DateTime" Precision="3" />
+          <Property Name="LOGIN_INS" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DATA_AGG" Type="DateTime" Precision="3" />
+          <Property Name="LOGIN_AGG" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="NOMECAMPO" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CITTA" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DESCRIZIONE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="STATO" Type="Int32" Nullable="false" />
+          <Property Name="LATITUDINE_GMAP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="LONGITUDINE_GMAP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ZOOM_GMAP" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="GMAP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CONVENZIONATO" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LS_INCONTRI">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATA_INS" Type="DateTime" Precision="3" />
+          <Property Name="LOGIN_INS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DATA_AGG" Type="DateTime" Precision="3" />
+          <Property Name="LOGIN_AGG" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ID_INCONTRO" Type="Int32" Nullable="false" />
+          <Property Name="PUNTEGGIO_1" Type="Int32" />
+          <Property Name="PUNTEGGIO_2" Type="Int32" />
+          <Property Name="FL_LIVE" Type="Int32" Nullable="false" />
+          <Property Name="ABILITATO" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="INCONTRI_RISULTATI_V">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ID_CALENDARIO" />
+            <PropertyRef Name="ID_SQUADRA_1" />
+            <PropertyRef Name="ID_SQUADRA_2" />
+            <PropertyRef Name="ID_CAMPO" />
+            <PropertyRef Name="STATO" />
+            <PropertyRef Name="ESCLUDI_DESIGNATORE" />
+            <PropertyRef Name="STATO_RISULTATO" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="DATA_INS" Type="DateTime" Precision="3" />
+          <Property Name="LOGIN_INS" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DATA_AGG" Type="DateTime" Precision="3" />
+          <Property Name="LOGIN_AGG" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DATA_EVENTO" Type="DateTime" Precision="3" />
+          <Property Name="ORA" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="DATA_POSTICIPO" Type="DateTime" Precision="3" />
+          <Property Name="ID_CALENDARIO" Type="Int32" Nullable="false" />
+          <Property Name="NOTE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ID_SQUADRA_1" Type="Int32" Nullable="false" />
+          <Property Name="ID_SQUADRA_2" Type="Int32" Nullable="false" />
+          <Property Name="ID_CAMPO" Type="Int32" Nullable="false" />
+          <Property Name="STATO" Type="Int32" Nullable="false" />
+          <Property Name="NOTE_AMMINISTRATORI" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ORA_POSTICIPO" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ID_ARBITRO" Type="Int32" />
+          <Property Name="TOSTA" Type="Int32" />
+          <Property Name="CONFERMA_ARBITRO" Type="Int32" />
+          <Property Name="CONFERMA_STATISTICHE" Type="Int32" />
+          <Property Name="NOTE_REFERTO_SITO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ID_CAMPO_RECUPERO" Type="Int32" />
+          <Property Name="TESTO_SEGNALAZIONE_ARBITRI" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ESCLUDI_DESIGNATORE" Type="Boolean" Nullable="false" />
+          <Property Name="OFC_CalendarioGiornate_ID" Type="Int32" />
+          <Property Name="PUNTEGGIO_1" Type="Int32" />
+          <Property Name="PUNTEGGIO_2" Type="Int32" />
+          <Property Name="SCHEDINA" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="STATO_RISULTATO" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -452,6 +669,100 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_NEWS_V' does not have a pr
                 <ScalarProperty Name="LOGO" ColumnName="LOGO" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
                 <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="LOGIN_AGG" ColumnName="LOGIN_AGG" />
+                <ScalarProperty Name="DATA_AGG" ColumnName="DATA_AGG" />
+                <ScalarProperty Name="LOGIN_INS" ColumnName="LOGIN_INS" />
+                <ScalarProperty Name="DATA_INS" ColumnName="DATA_INS" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Sp_ProssimeGare" FunctionName="absoluteModel.Store.Sp_ProssimeGare">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="absoluteModel.Sp_ProssimeGare_Result">
+                <ScalarProperty Name="ID_COMPETIZIONE" ColumnName="ID_COMPETIZIONE" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="NOME_EVENTO" ColumnName="NOME_EVENTO" />
+                <ScalarProperty Name="ID_EVENTO" ColumnName="ID_EVENTO" />
+                <ScalarProperty Name="TIPO_EVENTO" ColumnName="TIPO_EVENTO" />
+                <ScalarProperty Name="ORDINE_CLASSIFICA" ColumnName="ORDINE_CLASSIFICA" />
+                <ScalarProperty Name="ID_INCONTRO" ColumnName="ID_INCONTRO" />
+                <ScalarProperty Name="DATA_EVENTO" ColumnName="DATA_EVENTO" />
+                <ScalarProperty Name="DATA_POSTICIPO" ColumnName="DATA_POSTICIPO" />
+                <ScalarProperty Name="ID_CAMPO" ColumnName="ID_CAMPO" />
+                <ScalarProperty Name="ID_CAMPO_RECUPERO" ColumnName="ID_CAMPO_RECUPERO" />
+                <ScalarProperty Name="ORA" ColumnName="ORA" />
+                <ScalarProperty Name="ORA_POSTICIPO" ColumnName="ORA_POSTICIPO" />
+                <ScalarProperty Name="ID_SQUADRA_1" ColumnName="ID_SQUADRA_1" />
+                <ScalarProperty Name="ID_SQUADRA_2" ColumnName="ID_SQUADRA_2" />
+                <ScalarProperty Name="ID_CALENDARIO" ColumnName="ID_CALENDARIO" />
+                <ScalarProperty Name="NOME_CALENDARIO" ColumnName="NOME_CALENDARIO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="CAMPI">
+            <EntityTypeMapping TypeName="absoluteModel.CAMPI">
+              <MappingFragment StoreEntitySet="CAMPI">
+                <ScalarProperty Name="CONVENZIONATO" ColumnName="CONVENZIONATO" />
+                <ScalarProperty Name="GMAP" ColumnName="GMAP" />
+                <ScalarProperty Name="ZOOM_GMAP" ColumnName="ZOOM_GMAP" />
+                <ScalarProperty Name="LONGITUDINE_GMAP" ColumnName="LONGITUDINE_GMAP" />
+                <ScalarProperty Name="LATITUDINE_GMAP" ColumnName="LATITUDINE_GMAP" />
+                <ScalarProperty Name="STATO" ColumnName="STATO" />
+                <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
+                <ScalarProperty Name="CITTA" ColumnName="CITTA" />
+                <ScalarProperty Name="NOMECAMPO" ColumnName="NOMECAMPO" />
+                <ScalarProperty Name="LOGIN_AGG" ColumnName="LOGIN_AGG" />
+                <ScalarProperty Name="DATA_AGG" ColumnName="DATA_AGG" />
+                <ScalarProperty Name="LOGIN_INS" ColumnName="LOGIN_INS" />
+                <ScalarProperty Name="DATA_INS" ColumnName="DATA_INS" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LS_INCONTRI">
+            <EntityTypeMapping TypeName="absoluteModel.LS_INCONTRI">
+              <MappingFragment StoreEntitySet="LS_INCONTRI">
+                <ScalarProperty Name="ABILITATO" ColumnName="ABILITATO" />
+                <ScalarProperty Name="FL_LIVE" ColumnName="FL_LIVE" />
+                <ScalarProperty Name="PUNTEGGIO_2" ColumnName="PUNTEGGIO_2" />
+                <ScalarProperty Name="PUNTEGGIO_1" ColumnName="PUNTEGGIO_1" />
+                <ScalarProperty Name="ID_INCONTRO" ColumnName="ID_INCONTRO" />
+                <ScalarProperty Name="LOGIN_AGG" ColumnName="LOGIN_AGG" />
+                <ScalarProperty Name="DATA_AGG" ColumnName="DATA_AGG" />
+                <ScalarProperty Name="LOGIN_INS" ColumnName="LOGIN_INS" />
+                <ScalarProperty Name="DATA_INS" ColumnName="DATA_INS" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="INCONTRI_RISULTATI_V">
+            <EntityTypeMapping TypeName="absoluteModel.INCONTRI_RISULTATI_V">
+              <MappingFragment StoreEntitySet="INCONTRI_RISULTATI_V">
+                <ScalarProperty Name="STATO_RISULTATO" ColumnName="STATO_RISULTATO" />
+                <ScalarProperty Name="SCHEDINA" ColumnName="SCHEDINA" />
+                <ScalarProperty Name="PUNTEGGIO_2" ColumnName="PUNTEGGIO_2" />
+                <ScalarProperty Name="PUNTEGGIO_1" ColumnName="PUNTEGGIO_1" />
+                <ScalarProperty Name="OFC_CalendarioGiornate_ID" ColumnName="OFC_CalendarioGiornate_ID" />
+                <ScalarProperty Name="ESCLUDI_DESIGNATORE" ColumnName="ESCLUDI_DESIGNATORE" />
+                <ScalarProperty Name="TESTO_SEGNALAZIONE_ARBITRI" ColumnName="TESTO_SEGNALAZIONE_ARBITRI" />
+                <ScalarProperty Name="ID_CAMPO_RECUPERO" ColumnName="ID_CAMPO_RECUPERO" />
+                <ScalarProperty Name="NOTE_REFERTO_SITO" ColumnName="NOTE_REFERTO_SITO" />
+                <ScalarProperty Name="CONFERMA_STATISTICHE" ColumnName="CONFERMA_STATISTICHE" />
+                <ScalarProperty Name="CONFERMA_ARBITRO" ColumnName="CONFERMA_ARBITRO" />
+                <ScalarProperty Name="TOSTA" ColumnName="TOSTA" />
+                <ScalarProperty Name="ID_ARBITRO" ColumnName="ID_ARBITRO" />
+                <ScalarProperty Name="ORA_POSTICIPO" ColumnName="ORA_POSTICIPO" />
+                <ScalarProperty Name="NOTE_AMMINISTRATORI" ColumnName="NOTE_AMMINISTRATORI" />
+                <ScalarProperty Name="STATO" ColumnName="STATO" />
+                <ScalarProperty Name="ID_CAMPO" ColumnName="ID_CAMPO" />
+                <ScalarProperty Name="ID_SQUADRA_2" ColumnName="ID_SQUADRA_2" />
+                <ScalarProperty Name="ID_SQUADRA_1" ColumnName="ID_SQUADRA_1" />
+                <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+                <ScalarProperty Name="ID_CALENDARIO" ColumnName="ID_CALENDARIO" />
+                <ScalarProperty Name="DATA_POSTICIPO" ColumnName="DATA_POSTICIPO" />
+                <ScalarProperty Name="ORA" ColumnName="ORA" />
+                <ScalarProperty Name="DATA_EVENTO" ColumnName="DATA_EVENTO" />
                 <ScalarProperty Name="LOGIN_AGG" ColumnName="LOGIN_AGG" />
                 <ScalarProperty Name="DATA_AGG" ColumnName="DATA_AGG" />
                 <ScalarProperty Name="LOGIN_INS" ColumnName="LOGIN_INS" />

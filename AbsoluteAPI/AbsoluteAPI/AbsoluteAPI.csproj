@@ -152,6 +152,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
+    <Compile Include="Model\CAMPI.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\DbModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -170,9 +173,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\INCONTRI_RISULTATI_V.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\LS_INCONTRI.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\partial\APP_BANNER_V_p.cs" />
+    <Compile Include="Model\partial\SQUADRE_p.cs" />
     <Compile Include="Model\partial\APP_NEWS_V_p.cs" />
     <Compile Include="Model\partial\APP_ELENCO_SQUADRE_V_p.cs" />
+    <Compile Include="Model\Sp_ProssimeGare_Result.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\SQUADRE.cs">
       <DependentUpon>DbModel.tt</DependentUpon>
     </Compile>

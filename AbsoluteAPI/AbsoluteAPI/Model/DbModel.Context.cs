@@ -12,6 +12,8 @@ namespace AbsoluteAPI.Model
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class absoluteEntities : DbContext
     {
@@ -32,5 +34,21 @@ namespace AbsoluteAPI.Model
         public virtual DbSet<APP_NEWS_V> APP_NEWS_V { get; set; }
         public virtual DbSet<APP_LS_COMPETIZIONI_EVENTI_V> APP_LS_COMPETIZIONI_EVENTI_V { get; set; }
         public virtual DbSet<SQUADRE> SQUADRE { get; set; }
+        public virtual DbSet<CAMPI> CAMPI { get; set; }
+        public virtual DbSet<LS_INCONTRI> LS_INCONTRI { get; set; }
+        public virtual DbSet<INCONTRI_RISULTATI_V> INCONTRI_RISULTATI_V { get; set; }
+    
+        public virtual ObjectResult<Sp_ProssimeGare_Result> Sp_ProssimeGare(string time, Nullable<int> idsquadra)
+        {
+            var timeParameter = time != null ?
+                new ObjectParameter("time", time) :
+                new ObjectParameter("time", typeof(string));
+    
+            var idsquadraParameter = idsquadra.HasValue ?
+                new ObjectParameter("idsquadra", idsquadra) :
+                new ObjectParameter("idsquadra", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_ProssimeGare_Result>("Sp_ProssimeGare", timeParameter, idsquadraParameter);
+        }
     }
 }
