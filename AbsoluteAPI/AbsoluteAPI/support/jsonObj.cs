@@ -128,5 +128,10 @@ namespace AbsoluteAPI.support
         {
             public competizione competizione { get; set; }
         }
+
+        public class elencoGare : genericResponse
+        {
+            public List<competizione> competizioni { get; set; }
+        }
     }
 }
