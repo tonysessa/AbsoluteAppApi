@@ -13,9 +13,11 @@ using System.Configuration;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography.Xml;
+using System.Security.Permissions;
 
 namespace AbsoluteAPI.Controllers
 {
+    
     public class ServicesController : ApiController
     {
 
@@ -141,7 +143,7 @@ namespace AbsoluteAPI.Controllers
 
 
         [System.Web.Http.HttpGet]
-        [System.Web.Http.ActionName("news")]
+        [System.Web.Http.ActionName("newsDettaglio")]
         public detailNews getNews(int idnews)
         {
 
