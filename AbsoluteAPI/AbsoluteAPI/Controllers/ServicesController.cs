@@ -621,32 +621,7 @@ namespace AbsoluteAPI.Controllers
                             ic.ora = i.ORA_POSTICIPO != null ? i.ORA_POSTICIPO : i.ORA;
                             #endregion
                             #region risultati e live
-                            LS_INCONTRI ls = ctx.LS_INCONTRI.Where(t => t.ID_INCONTRO == id && t.ABILITATO == 1).FirstOrDefault();
-                            if (ls == null)
-                            {
-
-                                ic.risultato1 = "-";
-                                ic.risultato2 = "-";
-                                ic.flLive = false;
-                            }
-                            else
-                            {
-                                ic.flLive = ls.FL_LIVE == 1 ? true : false;
-                                ic.risultato1 = ls.FL_LIVE == 1 ? "0" : "-";
-                                ic.risultato2 = ls.FL_LIVE == 1 ? "0" : "-";
-
-
-                                ic.risultato1 = ls.PUNTEGGIO_1 != null ? ls.PUNTEGGIO_1.ToString() : "0";
-                                ic.risultato2 = ls.PUNTEGGIO_2 != null ? ls.PUNTEGGIO_2.ToString() : "0";
-                            }
-
-                            INCONTRI_RISULTATI_V ir = ctx.INCONTRI_RISULTATI_V.Where(t => t.ID == id).FirstOrDefault();
-                            if (ir != null)
-                            {
-                                ic.risultato1 = ir.PUNTEGGIO_1.ToString();
-                                ic.risultato2 = ir.PUNTEGGIO_2.ToString();
-                            }
-
+                            ic = SetRisultatoLive(ctx, ic);
                             #endregion
 
                             e.incontri.Add(ic);
@@ -714,13 +689,7 @@ namespace AbsoluteAPI.Controllers
                                 .OrderBy(t => t.id)
                                 .AsQueryable();
                         //
-                        //prendo tutte le squadre che trovo
                         
-                        //IEnumerable<int> listSquadre = 
-                        //listSquadre = listSquadre.Concat(i.Select(t => t.ID_SQUADRA_2)).Distinct();
-
-                        //IQueryable<SQUADRE> squadre = ctx.SQUADRE.Where(sq => listSquadre.Contains(sq.ID)).AsQueryable();
-                        //
                         response.competizioni = new List<competizione>();
                         foreach (var x in i)
                         {
@@ -802,9 +771,7 @@ namespace AbsoluteAPI.Controllers
                                             inc.ora = j.ORA_POSTICIPO != null ? j.ORA_POSTICIPO : j.ORA;
                                             #endregion
                                             #region risultati e live
-                                            inc.risultato1 = "-";
-                                            inc.risultato2 = "-";
-                                            inc.flLive = false;
+                                            inc = SetRisultatoLive(ctx, inc);
                                             #endregion
 
                                             e.incontri.Add(inc);
@@ -829,6 +796,41 @@ namespace AbsoluteAPI.Controllers
             }
 
             return response;
+        }
+
+
+        private incontro SetRisultatoLive(absoluteEntities c, incontro iInput)
+        {
+            #region risultati e live
+            LS_INCONTRI ls = c.LS_INCONTRI
+                                    .Where(t => t.ID_INCONTRO == iInput.id && t.ABILITATO == 1).FirstOrDefault();
+            if (ls == null)
+            {
+
+                iInput.risultato1 = "-";
+                iInput.risultato2 = "-";
+                iInput.flLive = false;
+            }
+            else
+            {
+                iInput.flLive = ls.FL_LIVE == 1 ? true : false;
+                iInput.risultato1 = ls.FL_LIVE == 1 ? "0" : "-";
+                iInput.risultato2 = ls.FL_LIVE == 1 ? "0" : "-";
+
+
+                iInput.risultato1 = ls.PUNTEGGIO_1 != null ? ls.PUNTEGGIO_1.ToString() : "0";
+                iInput.risultato2 = ls.PUNTEGGIO_2 != null ? ls.PUNTEGGIO_2.ToString() : "0";
+            }
+
+            INCONTRI_RISULTATI_V ir = c.INCONTRI_RISULTATI_V.Where(t => t.ID == iInput.id).FirstOrDefault();
+            if (ir != null)
+            {
+                iInput.risultato1 = ir.PUNTEGGIO_1.ToString();
+                iInput.risultato2 = ir.PUNTEGGIO_2.ToString();
+            }
+
+            #endregion
+            return iInput;
         }
 
     }
