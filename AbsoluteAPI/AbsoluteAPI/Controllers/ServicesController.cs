@@ -118,7 +118,7 @@ namespace AbsoluteAPI.Controllers
                             s.data = x.DATA_NEWS != null ? ((DateTime)x.DATA_NEWS).ToString("dd/MM/yyyy") : null;
                             s.linkEsterno = !string.IsNullOrEmpty(x.LINK_ESTERNO) ? x.LINK_ESTERNO : null;
                             s.immagine = !string.IsNullOrEmpty(x.ImmagineNews) ? x.ImmagineNews : null;
-
+                            s.testo = !string.IsNullOrEmpty(x.TESTO) ? x.TESTO : null;
                             response.news.Add(s);
                         }
 
@@ -166,7 +166,7 @@ namespace AbsoluteAPI.Controllers
                         s.data = x.DATA_NEWS != null ? ((DateTime)x.DATA_NEWS).ToString("dd/MM/yyyy") : null;
                         s.linkEsterno = !string.IsNullOrEmpty(x.LINK_ESTERNO) ? x.LINK_ESTERNO : null;
                         s.immagine = !string.IsNullOrEmpty(x.ImmagineNews) ? x.ImmagineNews : null;
-                        s.testo = !string.IsNullOrEmpty(x.ImmagineNews) ? x.ImmagineNews : null;
+                        s.testo = !string.IsNullOrEmpty(x.TESTO) ? x.TESTO : null;
                         s.titolo_share = x.TitoloShare;
                         s.testo_share = x.TestoShare;
 
