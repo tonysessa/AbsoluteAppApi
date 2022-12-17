@@ -5,15 +5,15 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\ProjectsPersonal\AbsoluteAppApi\AbsoluteAPI\AbsoluteAPI\bin\app.publish\</_PublishTargetUrl>
-    <History>True|2022-12-13T18:08:50.6483039Z;True|2022-12-12T15:33:13.3854410+01:00;True|2022-12-06T16:16:39.9474260+01:00;True|2022-12-06T15:23:34.3144182+01:00;True|2022-12-06T14:57:12.6533679+01:00;True|2022-12-06T10:15:41.4723932+01:00;</History>
+    <History>True|2022-12-17T16:21:56.2027620Z;True|2022-12-17T17:16:53.5876265+01:00;True|2022-12-17T17:11:15.1473431+01:00;True|2022-12-15T11:12:05.5616483+01:00;True|2022-12-14T18:43:04.6132735+01:00;True|2022-12-14T18:41:07.6812018+01:00;True|2022-12-14T18:33:00.9614152+01:00;True|2022-12-14T18:21:31.6392258+01:00;True|2022-12-14T18:21:09.4926372+01:00;True|2022-12-14T18:15:27.3891974+01:00;True|2022-12-14T18:13:12.8697158+01:00;True|2022-12-14T18:12:26.6415963+01:00;True|2022-12-14T18:04:40.8914117+01:00;True|2022-12-14T17:56:16.5555908+01:00;True|2022-12-14T17:48:36.3366663+01:00;True|2022-12-14T17:46:39.0273397+01:00;True|2022-12-14T17:44:31.5288799+01:00;True|2022-12-14T17:28:46.9887256+01:00;True|2022-12-14T17:23:55.7360858+01:00;True|2022-12-14T17:15:07.1799687+01:00;True|2022-12-14T16:48:44.6282496+01:00;True|2022-12-13T19:08:50.6483039+01:00;True|2022-12-12T15:33:13.3854410+01:00;True|2022-12-06T16:16:39.9474260+01:00;True|2022-12-06T15:23:34.3144182+01:00;True|2022-12-06T14:57:12.6533679+01:00;True|2022-12-06T10:15:41.4723932+01:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/AbsoluteAPI.dll">
-      <publishTime>12/13/2022 19:08:49</publishTime>
+      <publishTime>12/17/2022 17:21:55</publishTime>
     </File>
     <File Include="bin/AbsoluteAPI.pdb">
-      <publishTime>12/13/2022 19:08:49</publishTime>
+      <publishTime>12/17/2022 17:21:55</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>09/10/2013 17:29:20</publishTime>
@@ -183,11 +183,20 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="bin/roslyn/VBCSCompiler.exe.config">
       <publishTime>08/08/2018 13:18:16</publishTime>
     </File>
+    <File Include="bin/Swashbuckle.Core.dll">
+      <publishTime>06/05/2015 10:45:10</publishTime>
+    </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
       <publishTime>05/28/2022 00:41:34</publishTime>
     </File>
+    <File Include="bin/System.Web.Cors.dll">
+      <publishTime>05/28/2022 01:41:44</publishTime>
+    </File>
     <File Include="bin/System.Web.Helpers.dll">
       <publishTime>05/28/2022 00:41:54</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.Cors.dll">
+      <publishTime>05/28/2022 01:42:16</publishTime>
     </File>
     <File Include="bin/System.Web.Http.dll">
       <publishTime>05/28/2022 00:41:46</publishTime>
@@ -213,6 +222,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="bin/System.Web.WebPages.Razor.dll">
       <publishTime>05/28/2022 00:42:50</publishTime>
     </File>
+    <File Include="bin/WebActivatorEx.dll">
+      <publishTime>02/08/2013 17:42:28</publishTime>
+    </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>01/23/2014 13:57:34</publishTime>
     </File>
@@ -229,7 +241,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>12/12/2022 15:26:44</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/12/2022 15:33:12</publishTime>
+      <publishTime>12/17/2022 17:11:14</publishTime>
     </File>
   </ItemGroup>
 </Project>

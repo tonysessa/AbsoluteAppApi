@@ -14,14 +14,15 @@ using System.Text.RegularExpressions;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography.Xml;
 using System.Security.Permissions;
+using System.Web.Http.Cors;
 
 namespace AbsoluteAPI.Controllers
 {
-    
+    [DisableCors]
     public class ServicesController : ApiController
     {
-
-        [System.Web.Http.HttpPost]
+        [DisableCors]
+        [System.Web.Http.HttpGet]
         [System.Web.Http.ActionName("elencoSquadre")]
         public elencoSquadre elencoSquadre(string _text)
         {
