@@ -17,7 +17,7 @@ namespace AbsoluteAPI.Model
         {
             get
             {
-                string path = !string.IsNullOrEmpty(this.LOGO) ? "public/squadre/" + this.LOGO : "assets/images/placeholder-squadra.png";
+                string path = !string.IsNullOrEmpty(this.LOGO) ? "public/squadre/" + this.LOGO : "assets/images/soccer/placeholder-squadra.png";
                 return string.Format("{0}/{1}", Url, path);
             }
         }
