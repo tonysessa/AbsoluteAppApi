@@ -37,6 +37,9 @@ namespace AbsoluteAPI.Model
         public virtual DbSet<CAMPI> CAMPI { get; set; }
         public virtual DbSet<LS_INCONTRI> LS_INCONTRI { get; set; }
         public virtual DbSet<INCONTRI_RISULTATI_V> INCONTRI_RISULTATI_V { get; set; }
+        public virtual DbSet<EVENTI> EVENTI { get; set; }
+        public virtual DbSet<CLASSIFICHE_SQUADRE_V> CLASSIFICHE_SQUADRE_V { get; set; }
+        public virtual DbSet<EVENTI_SQUADRE> EVENTI_SQUADRE { get; set; }
     
         public virtual ObjectResult<Sp_ProssimeGare_Result> Sp_ProssimeGare(string time, Nullable<int> idsquadra)
         {

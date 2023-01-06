@@ -15,6 +15,9 @@
         <EntityTypeShape EntityType="absoluteModel.CAMPI" Width="1.5" PointX="5.375" PointY="6.75" />
         <EntityTypeShape EntityType="absoluteModel.LS_INCONTRI" Width="1.5" PointX="7.375" PointY="5.75" />
         <EntityTypeShape EntityType="absoluteModel.INCONTRI_RISULTATI_V" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="absoluteModel.EVENTI" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="absoluteModel.CLASSIFICHE_SQUADRE_V" Width="1.5" PointX="7.375" PointY="9.75" />
+        <EntityTypeShape EntityType="absoluteModel.EVENTI_SQUADRE" Width="1.5" PointX="9.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

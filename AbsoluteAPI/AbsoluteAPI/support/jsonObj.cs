@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbsoluteAPI.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -88,7 +89,11 @@ namespace AbsoluteAPI.support
         {
             public int id { get; set; }
             public string nome { get; set; }
+            public string tipoEvento { get; set; }
+            public string OrdineClassifica { get; set; }
             public List<incontro> incontri { get; set; }
+
+            public List<classifica> classifiche { get; set; }
         }
 
         public class prossimeGare: genericResponse
@@ -121,7 +126,9 @@ namespace AbsoluteAPI.support
 
         public class dettaglioEvento:genericResponse
         {
-
+           
+            //public squadra squadra { get; set; }
+            public competizione competizione { get; set; }
         }
 
         public class dettaglioGara : genericResponse
@@ -132,6 +139,26 @@ namespace AbsoluteAPI.support
         public class elencoGare : genericResponse
         {
             public List<competizione> competizioni { get; set; }
+        }
+
+        public class classifica
+        {
+            public string nome { get; set; }
+            public List<rigaClassifica> righe { get; set; }
+
+
+        }
+        public class rigaClassifica
+        {
+           
+            public squadra squadra { get; set;}
+            public int punti_penalita { get; set; }
+            public int punti { get; set; }
+            public int giocate { get; set; }
+            public int vinte { get; set; }
+            public int pareggiate { get; set; }
+            public int perse { get; set; }
+            public int dr { get; set; }
         }
     }
 }

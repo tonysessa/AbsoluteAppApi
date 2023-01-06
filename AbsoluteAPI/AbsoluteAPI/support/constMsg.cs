@@ -20,5 +20,7 @@ namespace AbsoluteAPI.support
         public const string _squadraVincente = "Vincente";
         public const string _noDettaglio = "Dettaglio non disponibile";
         public const string _paramError = "Parametri non corretti";
+        public const string _clsGenerale = "Classifica Generale";
+        public const string _cls = "Classifica";
     }
 }

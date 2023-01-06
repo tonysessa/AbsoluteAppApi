@@ -15,6 +15,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography.Xml;
 using System.Security.Permissions;
 using System.Web.Http.Cors;
+using System.Web.DynamicData;
 
 namespace AbsoluteAPI.Controllers
 {
@@ -457,7 +458,7 @@ namespace AbsoluteAPI.Controllers
                                                     #endregion
                                                     #region data e ora
                                                     i.data = j.DATA_POSTICIPO != null ? ((DateTime)j.DATA_POSTICIPO).ToString("dd/MM/yyyy") : ((DateTime)j.DATA_EVENTO).ToString("dd/MM/yyyy");
-                                                    i.ora = j.ORA_POSTICIPO != null ? j.ORA_POSTICIPO : j.ORA;
+                                                    i.ora = !string.IsNullOrEmpty(j.ORA_POSTICIPO) ? j.ORA_POSTICIPO : j.ORA;
                                                     #endregion
                                                     #region risultati e live
                                                     i.risultato1 = "-";
@@ -503,13 +504,202 @@ namespace AbsoluteAPI.Controllers
 
         [System.Web.Http.HttpGet]
         [System.Web.Http.ActionName("dettaglioEvento")]
-        public dettaglioEvento dettaglioEvento(int idsquadra, int idEvento)
+       
+        public dettaglioEvento dettaglioEvento(int idsquadra, int idevento)
         {
+        //https://localhost:44322/api/Services/dettaglioEvento?idsquadra=6413&idevento=2718/
+        //https://dev.absolute5.it/api/Services/dettaglioEvento?idsquadra=6437&idevento=2722
             dettaglioEvento response = new dettaglioEvento();
             try
             {
-                if (idsquadra > 0 && idEvento > 0)
+                if (idevento > 0 && idsquadra > 0)
                 {
+                    using (absoluteEntities ctx = new absoluteEntities())
+                    {
+                       
+                        EVENTI e = ctx.EVENTI.Where(t => t.ID == idevento).FirstOrDefault();
+                        if (e != null)
+                        {
+                            
+                            #region competizione
+                            APP_COMPETIZIONI_EVENTI_V c = ctx.APP_COMPETIZIONI_EVENTI_V.Where(t => t.ID_EVENTI == idevento && t.ID == e.ID_COMPETIZIONE).FirstOrDefault();
+                            if (c!= null)
+                            {
+                                competizione competizione = new competizione();
+                                competizione.id = c.ID;
+                                competizione.nome = c.NOME;
+
+                                #region evento
+                                competizione.eventi = new List<evento>();
+                                evento ev = new evento();
+                                ev.id = c.ID_EVENTI;
+                                ev.nome = c.NOME_EVENTI;
+                                ev.tipoEvento = e.TIPO_GIRONE;
+                                ev.OrdineClassifica = e.ORDINE_CLASSIFICA;
+                                if (!string.IsNullOrEmpty(ev.tipoEvento))
+                                {
+                                    if (ev.tipoEvento.Equals("2"))
+                                    {
+                                        IQueryable<APP_INCONTRI_V> query = ctx.APP_INCONTRI_V
+                                                                                            .Where(t => (t.ID_SQUADRA_1 == idsquadra
+                                                                                                                            || t.ID_SQUADRA_2 == idsquadra)
+                                                                                                                            && t.ID_EVENTO == idevento)
+                                                                                            .OrderBy(t => t.DATA_POSTICIPO).ThenBy(t => t.DATA_EVENTO).AsQueryable();
+                                        
+                                        IEnumerable<int> listSquadre = query.Select(t => t.ID_SQUADRA_1).AsEnumerable();
+                                        listSquadre = listSquadre.Concat(query.Select(t => t.ID_SQUADRA_2)).Distinct();
+                                        IQueryable<SQUADRE> squadre = ctx.SQUADRE.Where(x => listSquadre.Contains(x.ID)).AsQueryable();
+
+                                        ev.incontri = new List<incontro>();
+                                        foreach (var j in query)
+                                        {
+                                            
+                                            incontro i = new incontro();                                           
+                                            i.id = j.ID_INCONTRO;
+                                            i.calendario = j.NOME_CALENDARIO;
+                                            //
+                                            #region squadre
+                                            squadra s1 = new squadra();
+                                            squadra s2 = new squadra();
+
+                                            s1.id = j.ID_SQUADRA_1;
+                                            if (s1.id > 0)
+                                            {
+                                                SQUADRE sq = squadre.Where(b => b.ID == s1.id).FirstOrDefault();
+                                                s1.nome = sq.NomeSquadra;
+                                                s1.logo = sq.LogoSquadra;
+
+                                            }
+                                            else
+                                                s1.nome = constMsg._squadraVincente;
+
+                                            s2.id = j.ID_SQUADRA_2;
+                                            if (s2.id > 0)
+                                            {
+                                                SQUADRE sq = squadre.Where(b => b.ID == s2.id).FirstOrDefault();
+                                                s2.nome = sq.NomeSquadra;
+                                                s2.logo = sq.LogoSquadra;
+
+                                            }
+                                            else
+                                                s2.nome = constMsg._squadraVincente;
+
+                                            i.squadra1 = s1;
+                                            i.squadra2 = s2;
+                                            #endregion
+                                            #region campo
+                                            campo c1 = new campo();
+                                            c1.id = j.ID_CAMPO;
+                                            if (j.ID_CAMPO_RECUPERO != 0 && !string.IsNullOrEmpty(j.ID_CAMPO_RECUPERO.ToString()))
+                                                c1.id = (int)j.ID_CAMPO_RECUPERO;
+                                            c1.nome = ctx.CAMPI.Where(t => t.ID == c1.id).FirstOrDefault().NOMECAMPO;
+                                            i.campo = c1;
+                                            #endregion
+                                            #region data e ora
+                                            i.data = j.DATA_POSTICIPO != null ? ((DateTime)j.DATA_POSTICIPO).ToString("dd/MM/yyyy") : ((DateTime)j.DATA_EVENTO).ToString("dd/MM/yyyy");
+                                            i.ora = !string.IsNullOrEmpty(j.ORA_POSTICIPO) ? j.ORA_POSTICIPO : j.ORA;
+                                            #endregion
+                                            #region risultati e live
+                                            i = SetRisultatoLive(ctx, i);
+                                            #endregion
+                                            ev.incontri.Add(i);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ev.classifiche = new List<classifica>();
+                                        #region classifica non Azzerata
+                                        
+                                        //Prendo tutte le squadre presenti in quel girone
+                                        List<int> listIdSquadre = ctx.EVENTI_SQUADRE.Where(t => t.ID_EVENTO == idevento && t.STATO == 1).Select(t=>t.ID_SQUADRA).Distinct().ToList();
+                                        List<SQUADRE> listaSquadre = ctx.SQUADRE.Where(t => listIdSquadre.Contains(t.ID)).ToList();
+                                        //
+                                        
+                                        IQueryable<CLASSIFICHE_SQUADRE_V> classificaNoAzzerata = ctx.CLASSIFICHE_SQUADRE_V
+                                                                                                    //.Where(t => listIdSquadre.Contains(t.ID_SQUADRA)
+                                                                                                                    .Where(t=>t.ID_EVENTO == idevento
+                                                                                                                    && t.AZZERATA == 0
+                                                                                                                    && t.ID_SQUADRA != 6420 //squadra fake
+                                                                                                           ).AsQueryable();
+                                        if (!ev.OrdineClassifica.Equals("1"))
+                                           classificaNoAzzerata.OrderByDescending(t => t.PUNTI).ThenByDescending(t => (t.GF - t.GS)).ThenBy(t => t.NOME);
+                                        else
+                                            classificaNoAzzerata.OrderBy(t => t.ORDINE).ThenByDescending(t => t.PUNTI).ThenByDescending(t => (t.GF - t.GS)).ThenBy(t => t.NOME);
+
+
+                                        classifica classifica = new classifica();
+                                        classifica.nome = ev.tipoEvento.Equals("1") ? constMsg._clsGenerale : constMsg._cls;
+
+                                        classifica.righe = new List<rigaClassifica>();
+                                        List<SQUADRE> listaSquadreToEmpty = listaSquadre;
+                                        foreach (var x in classificaNoAzzerata)
+                                        {
+                                            rigaClassifica r = new rigaClassifica();
+                                            SQUADRE sq = listaSquadre.Where(t => t.ID == x.ID_SQUADRA).FirstOrDefault();
+                                            r.squadra = new squadra(){ id = sq.ID, logo = sq.LogoSquadra, nome = sq.NomeSquadra };
+                                            r.perse = x.PERSE;
+                                            r.giocate = x.GIOCATE;
+                                            r.punti = x.PUNTI;
+                                            r.dr = (x.GF - x.GS);
+                                            r.vinte = x.VINTE;
+                                            r.pareggiate = x.PAREGGIATE;
+                                            r.punti_penalita = x.punti_penalita;
+                                            classifica.righe.Add(r);
+
+                                            listaSquadreToEmpty.Remove(sq);
+                                        }
+
+
+                                        //Aggiungo record per squadre che non hanno ancora giocato
+                                        foreach (var x in listaSquadreToEmpty)
+                                        {
+                                            rigaClassifica r = new rigaClassifica();
+                                            
+                                            r.squadra = new squadra() { id = x.ID, logo = x.LogoSquadra, nome = x.NomeSquadra };
+                                            r.perse = 0;
+                                            r.giocate = 0;
+                                            r.punti = 0;
+                                            r.dr = 0;
+                                            r.vinte = 0;
+                                            r.pareggiate = 0;
+                                            r.punti_penalita =0;
+                                            classifica.righe.Add(r);
+
+                                        }
+                                       
+                                        ev.classifiche.Add(classifica);
+                                        #endregion
+                                    }
+                                }
+                                competizione.eventi.Add(ev);
+
+
+                                #endregion
+                                response.competizione = competizione;
+                            }
+                            else
+                            {
+                                response.status = 0;
+                                response.message = constMsg._genericError;
+
+                            }
+                            #endregion
+
+
+
+
+                        }
+                        else
+                        {
+                            response.status = 0;
+                            response.message = constMsg._noDettaglio;
+                        }
+
+
+                        response.status = 1;
+                        
+                    }
+                      
                 }
                 else
                 {
@@ -621,7 +811,7 @@ namespace AbsoluteAPI.Controllers
                             #endregion
                             #region data e ora
                             ic.data = i.DATA_POSTICIPO != null ? ((DateTime)i.DATA_POSTICIPO).ToString("dd/MM/yyyy") : ((DateTime)i.DATA_EVENTO).ToString("dd/MM/yyyy");
-                            ic.ora = i.ORA_POSTICIPO != null ? i.ORA_POSTICIPO : i.ORA;
+                            ic.ora = !string.IsNullOrEmpty(i.ORA_POSTICIPO) ? i.ORA_POSTICIPO : i.ORA;
                             #endregion
                             #region risultati e live
                             ic = SetRisultatoLive(ctx, ic);
@@ -730,6 +920,7 @@ namespace AbsoluteAPI.Controllers
                                         foreach (var j in z.incontri)
                                         {
                                             incontro inc = new incontro();
+                                            inc.calendario = j.NOME_CALENDARIO;
                                             inc.id = j.ID_INCONTRO;
                                             //
                                             #region squadre
@@ -771,7 +962,7 @@ namespace AbsoluteAPI.Controllers
                                             #endregion
                                             #region data e ora
                                             inc.data = j.DATA_POSTICIPO != null ? ((DateTime)j.DATA_POSTICIPO).ToString("dd/MM/yyyy") : ((DateTime)j.DATA_EVENTO).ToString("dd/MM/yyyy");
-                                            inc.ora = j.ORA_POSTICIPO != null ? j.ORA_POSTICIPO : j.ORA;
+                                            inc.ora = !string.IsNullOrEmpty(j.ORA_POSTICIPO) ? j.ORA_POSTICIPO : j.ORA;
                                             #endregion
                                             #region risultati e live
                                             inc = SetRisultatoLive(ctx, inc);
