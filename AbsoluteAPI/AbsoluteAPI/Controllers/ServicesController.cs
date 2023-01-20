@@ -453,7 +453,29 @@ namespace AbsoluteAPI.Controllers
                                                     c1.id = j.ID_CAMPO;
                                                     if (j.ID_CAMPO_RECUPERO != 0 && !string.IsNullOrEmpty(j.ID_CAMPO_RECUPERO.ToString()))
                                                         c1.id = (int)j.ID_CAMPO_RECUPERO;
-                                                    c1.nome = ctx.CAMPI.Where(t => t.ID == c1.id).FirstOrDefault().NOMECAMPO;
+
+                                                    CAMPI campi = ctx.CAMPI.Where(t => t.ID == c1.id).FirstOrDefault();
+                                                    c1.nome = campi.NOMECAMPO;
+                                                    if (!string.IsNullOrEmpty("" + campi.GMAP))
+                                                    {
+                                                        string gmap = campi.GMAP.ToString().Replace("&amp;ll=", "&ll=");
+                                                        int index = gmap.IndexOf("&ll=");
+                                                        if (index > 0)
+                                                        {
+                                                            gmap = gmap.Substring(index + 4, gmap.Length - (index + 4));
+                                                            index = gmap.IndexOf("&");
+                                                            if (index > 0)
+                                                            {
+                                                                char[] separator = new char[] { ',' };
+                                                                string[] strArray = gmap.Substring(0, index).Split(separator);
+                                                                if (strArray.Length != 0)
+                                                                {
+                                                                    c1.googleLat = strArray[0];
+                                                                    c1.googleLon = strArray[1];
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                     i.campo = c1;
                                                     #endregion
                                                     #region data e ora
@@ -957,8 +979,34 @@ namespace AbsoluteAPI.Controllers
                                             c1.id = j.ID_CAMPO;
                                             if (j.ID_CAMPO_RECUPERO != 0 && !string.IsNullOrEmpty(j.ID_CAMPO_RECUPERO.ToString()))
                                                 c1.id = (int)j.ID_CAMPO_RECUPERO;
-                                            c1.nome = ctx.CAMPI.Where(t => t.ID == c1.id).FirstOrDefault().NOMECAMPO;
+
+                                            CAMPI campi = ctx.CAMPI.Where(t => t.ID == c1.id).FirstOrDefault();
+                                            c1.nome = campi.NOMECAMPO;
+                                            
+
+
+                                            if (!string.IsNullOrEmpty("" + campi.GMAP))
+                                            {
+                                                string gmap = campi.GMAP.ToString().Replace("&amp;ll=", "&ll=");
+                                                int index = gmap.IndexOf("&ll=");
+                                                if (index > 0)
+                                                {
+                                                    gmap = gmap.Substring(index + 4, gmap.Length - (index + 4));
+                                                    index = gmap.IndexOf("&");
+                                                    if (index > 0)
+                                                    {
+                                                        char[] separator = new char[] { ',' };
+                                                        string[] strArray = gmap.Substring(0, index).Split(separator);
+                                                        if (strArray.Length != 0)
+                                                        {
+                                                            c1.googleLat = strArray[0];
+                                                            c1.googleLon = strArray[1];
+                                                        }
+                                                    }
+                                                }
+                                            }
                                             inc.campo = c1;
+
                                             #endregion
                                             #region data e ora
                                             inc.data = j.DATA_POSTICIPO != null ? ((DateTime)j.DATA_POSTICIPO).ToString("dd/MM/yyyy") : ((DateTime)j.DATA_EVENTO).ToString("dd/MM/yyyy");
