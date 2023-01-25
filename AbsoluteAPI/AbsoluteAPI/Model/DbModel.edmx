@@ -122,6 +122,8 @@ warning 6002: The table/view 'absolute.MSSql27442.APP_COMPETIZIONI_EVENTI_V' doe
           <Property Name="TIPO_GIRONE" Type="nvarchar" MaxLength="1" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'absolute.MSSql27442.APP_COMPETIZIONI_EVENTI_V_FAKE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'absolute.MSSql27442.APP_ELENCO_SQUADRE_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="APP_ELENCO_SQUADRE_V">
           <Key>

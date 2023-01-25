@@ -791,27 +791,24 @@ namespace AbsoluteAPI.Controllers
 
                                 #endregion
                                 response.competizione = competizione;
+                                response.status = 1;
                             }
                             else
                             {
-                                response.status = 0;
-                                response.message = constMsg._genericError;
+                                response.status = 99;
+                                response.message = constMsg._noDettaglio;
 
                             }
                             #endregion
-
-
-
-
                         }
                         else
                         {
-                            response.status = 0;
+                            response.status = 99;
                             response.message = constMsg._noDettaglio;
                         }
 
 
-                        response.status = 1;
+                       
 
                     }
 
