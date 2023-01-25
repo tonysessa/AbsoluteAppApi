@@ -158,6 +158,8 @@ namespace AbsoluteAPI.support
             public int vinte { get; set; }
             public int pareggiate { get; set; }
             public int perse { get; set; }
+            public int gf { get; set; }
+            public int gs { get; set; }
             public int dr { get; set; }
         }
     }

@@ -98,9 +98,9 @@ namespace AbsoluteAPI.Controllers
                 {
                     IQueryable<APP_NEWS_V> list = null;
                     if (flagHome == 1)
-                        list = ctx.APP_NEWS_V.Where(t => t.FL_HOME == 1).OrderByDescending(t => t.DATA_NEWS);
+                        list = ctx.APP_NEWS_V.Where(t => t.FL_HOME == 1).OrderByDescending(t => t.DATA_NEWS).ThenByDescending(t => t.ID);
                     else
-                        list = ctx.APP_NEWS_V.OrderByDescending(t => t.DATA_NEWS);
+                        list = ctx.APP_NEWS_V.OrderByDescending(t => t.DATA_NEWS).ThenByDescending(t => t.ID);
 
                     if (numToResponse > 0)
                         list = list.Take(numToResponse);
@@ -526,11 +526,12 @@ namespace AbsoluteAPI.Controllers
 
         [System.Web.Http.HttpGet]
         [System.Web.Http.ActionName("dettaglioEvento")]
-       
+
         public dettaglioEvento dettaglioEvento(int idsquadra, int idevento)
         {
-        //https://localhost:44322/api/Services/dettaglioEvento?idsquadra=6413&idevento=2718/
-        //https://dev.absolute5.it/api/Services/dettaglioEvento?idsquadra=6437&idevento=2722
+            //https://localhost:44322/api/Services/dettaglioEvento?idsquadra=6413&idevento=2718/
+            //https://dev.absolute5.it/api/Services/dettaglioEvento?idsquadra=6437&idevento=2722
+            //https://dev.absolute5.it/api/Services/dettaglioEvento?idsquadra=1282&idevento=2327
             dettaglioEvento response = new dettaglioEvento();
             try
             {
@@ -538,14 +539,14 @@ namespace AbsoluteAPI.Controllers
                 {
                     using (absoluteEntities ctx = new absoluteEntities())
                     {
-                       
+
                         EVENTI e = ctx.EVENTI.Where(t => t.ID == idevento).FirstOrDefault();
                         if (e != null)
                         {
-                            
+
                             #region competizione
                             APP_COMPETIZIONI_EVENTI_V c = ctx.APP_COMPETIZIONI_EVENTI_V.Where(t => t.ID_EVENTI == idevento && t.ID == e.ID_COMPETIZIONE).FirstOrDefault();
-                            if (c!= null)
+                            if (c != null)
                             {
                                 competizione competizione = new competizione();
                                 competizione.id = c.ID;
@@ -567,7 +568,7 @@ namespace AbsoluteAPI.Controllers
                                                                                                                             || t.ID_SQUADRA_2 == idsquadra)
                                                                                                                             && t.ID_EVENTO == idevento)
                                                                                             .OrderBy(t => t.DATA_POSTICIPO).ThenBy(t => t.DATA_EVENTO).AsQueryable();
-                                        
+
                                         IEnumerable<int> listSquadre = query.Select(t => t.ID_SQUADRA_1).AsEnumerable();
                                         listSquadre = listSquadre.Concat(query.Select(t => t.ID_SQUADRA_2)).Distinct();
                                         IQueryable<SQUADRE> squadre = ctx.SQUADRE.Where(x => listSquadre.Contains(x.ID)).AsQueryable();
@@ -575,8 +576,8 @@ namespace AbsoluteAPI.Controllers
                                         ev.incontri = new List<incontro>();
                                         foreach (var j in query)
                                         {
-                                            
-                                            incontro i = new incontro();                                           
+
+                                            incontro i = new incontro();
                                             i.id = j.ID_INCONTRO;
                                             i.calendario = j.NOME_CALENDARIO;
                                             //
@@ -614,7 +615,31 @@ namespace AbsoluteAPI.Controllers
                                             c1.id = j.ID_CAMPO;
                                             if (j.ID_CAMPO_RECUPERO != 0 && !string.IsNullOrEmpty(j.ID_CAMPO_RECUPERO.ToString()))
                                                 c1.id = (int)j.ID_CAMPO_RECUPERO;
-                                            c1.nome = ctx.CAMPI.Where(t => t.ID == c1.id).FirstOrDefault().NOMECAMPO;
+
+                                            CAMPI campi = ctx.CAMPI.Where(t => t.ID == c1.id).FirstOrDefault();
+                                            c1.nome = campi.NOMECAMPO;
+
+                                            if (!string.IsNullOrEmpty("" + campi.GMAP))
+                                            {
+                                                string gmap = campi.GMAP.ToString().Replace("&amp;ll=", "&ll=");
+                                                int index = gmap.IndexOf("&ll=");
+                                                if (index > 0)
+                                                {
+                                                    gmap = gmap.Substring(index + 4, gmap.Length - (index + 4));
+                                                    index = gmap.IndexOf("&");
+                                                    if (index > 0)
+                                                    {
+                                                        char[] separator = new char[] { ',' };
+                                                        string[] strArray = gmap.Substring(0, index).Split(separator);
+                                                        if (strArray.Length != 0)
+                                                        {
+                                                            c1.googleLat = strArray[0];
+                                                            c1.googleLon = strArray[1];
+                                                        }
+                                                    }
+                                                }
+                                            }
+
                                             i.campo = c1;
                                             #endregion
                                             #region data e ora
@@ -631,34 +656,35 @@ namespace AbsoluteAPI.Controllers
                                     {
                                         ev.classifiche = new List<classifica>();
                                         #region classifica non Azzerata
-                                        
+
                                         //Prendo tutte le squadre presenti in quel girone
-                                        List<int> listIdSquadre = ctx.EVENTI_SQUADRE.Where(t => t.ID_EVENTO == idevento && t.STATO == 1).Select(t=>t.ID_SQUADRA).Distinct().ToList();
+                                        List<int> listIdSquadre = ctx.EVENTI_SQUADRE.Where(t => t.ID_EVENTO == idevento && t.STATO == 1).Select(t => t.ID_SQUADRA).Distinct().ToList();
                                         List<SQUADRE> listaSquadre = ctx.SQUADRE.Where(t => listIdSquadre.Contains(t.ID)).ToList();
                                         //
-                                        
+
                                         IQueryable<CLASSIFICHE_SQUADRE_V> classificaNoAzzerata = ctx.CLASSIFICHE_SQUADRE_V
-                                                                                                    //.Where(t => listIdSquadre.Contains(t.ID_SQUADRA)
-                                                                                                                    .Where(t=>t.ID_EVENTO == idevento
+                                                                                                                    .Where(t => t.ID_EVENTO == idevento
                                                                                                                     && t.AZZERATA == 0
                                                                                                                     && t.ID_SQUADRA != 6420 //squadra fake
                                                                                                            ).AsQueryable();
-                                        if (!ev.OrdineClassifica.Equals("1"))
-                                           classificaNoAzzerata.OrderByDescending(t => t.PUNTI).ThenByDescending(t => (t.GF - t.GS)).ThenBy(t => t.NOME);
+                                        if (ev.OrdineClassifica.Equals("0"))
+                                            classificaNoAzzerata = classificaNoAzzerata.OrderByDescending(t => t.PUNTI).ThenByDescending(t => (t.GF - t.GS)).ThenBy(t => t.NOME);
                                         else
-                                            classificaNoAzzerata.OrderBy(t => t.ORDINE).ThenByDescending(t => t.PUNTI).ThenByDescending(t => (t.GF - t.GS)).ThenBy(t => t.NOME);
+                                            classificaNoAzzerata = classificaNoAzzerata.OrderBy(t => t.ORDINE).ThenByDescending(t => t.PUNTI).ThenByDescending(t => (t.GF - t.GS)).ThenBy(t => t.NOME);
 
 
                                         classifica classifica = new classifica();
                                         classifica.nome = ev.tipoEvento.Equals("1") ? constMsg._clsGenerale : constMsg._cls;
 
                                         classifica.righe = new List<rigaClassifica>();
-                                        List<SQUADRE> listaSquadreToEmpty = listaSquadre;
+                                        List<SQUADRE> listaSquadreToEmpty = new List<SQUADRE>();
+                                        listaSquadreToEmpty.AddRange(listaSquadre);
+                                            
                                         foreach (var x in classificaNoAzzerata)
                                         {
                                             rigaClassifica r = new rigaClassifica();
                                             SQUADRE sq = listaSquadre.Where(t => t.ID == x.ID_SQUADRA).FirstOrDefault();
-                                            r.squadra = new squadra(){ id = sq.ID, logo = sq.LogoSquadra, nome = sq.NomeSquadra };
+                                            r.squadra = new squadra() { id = sq.ID, logo = sq.LogoSquadra, nome = sq.NomeSquadra };
                                             r.perse = x.PERSE;
                                             r.giocate = x.GIOCATE;
                                             r.punti = x.PUNTI;
@@ -666,6 +692,8 @@ namespace AbsoluteAPI.Controllers
                                             r.vinte = x.VINTE;
                                             r.pareggiate = x.PAREGGIATE;
                                             r.punti_penalita = x.punti_penalita;
+                                            r.gf = x.GF;
+                                            r.gs = x.GS;
                                             classifica.righe.Add(r);
 
                                             listaSquadreToEmpty.Remove(sq);
@@ -676,7 +704,7 @@ namespace AbsoluteAPI.Controllers
                                         foreach (var x in listaSquadreToEmpty)
                                         {
                                             rigaClassifica r = new rigaClassifica();
-                                            
+
                                             r.squadra = new squadra() { id = x.ID, logo = x.LogoSquadra, nome = x.NomeSquadra };
                                             r.perse = 0;
                                             r.giocate = 0;
@@ -684,12 +712,77 @@ namespace AbsoluteAPI.Controllers
                                             r.dr = 0;
                                             r.vinte = 0;
                                             r.pareggiate = 0;
-                                            r.punti_penalita =0;
+                                            r.punti_penalita = 0;
+                                            r.gs = 0;
+                                            r.gf = 0;
                                             classifica.righe.Add(r);
 
                                         }
-                                       
+
                                         ev.classifiche.Add(classifica);
+                                        #endregion
+
+                                        #region Classifica clausura
+
+                                        IQueryable<CLASSIFICHE_SQUADRE_V> classificaClausura = ctx.CLASSIFICHE_SQUADRE_V
+                                                                                                                    .Where(t => t.ID_EVENTO == idevento
+                                                                                                                    && t.AZZERATA == 1
+                                                                                                                    && t.ID_SQUADRA != 6420 //squadra fake
+                                                                                                           ).AsQueryable();
+                                        if (classificaClausura.Count() > 0)
+                                        {
+                                            if (ev.OrdineClassifica.Equals("0"))
+                                                classificaClausura = classificaClausura.OrderByDescending(t => t.PUNTI).ThenByDescending(t => (t.GF - t.GS)).ThenBy(t => t.NOME);
+                                            else
+                                                classificaClausura = classificaClausura.OrderBy(t => t.ORDINE).ThenByDescending(t => t.PUNTI).ThenByDescending(t => (t.GF - t.GS)).ThenBy(t => t.NOME);
+
+
+
+
+                                            classifica = new classifica();
+                                            classifica.nome = constMsg._clsClausura;
+                                            classifica.righe = new List<rigaClassifica>();
+                                            listaSquadreToEmpty = listaSquadre;
+                                            foreach (var x in classificaClausura)
+                                            {
+                                                rigaClassifica r = new rigaClassifica();
+                                                SQUADRE sq = listaSquadre.Where(t => t.ID == x.ID_SQUADRA).FirstOrDefault();
+                                                r.squadra = new squadra() { id = sq.ID, logo = sq.LogoSquadra, nome = sq.NomeSquadra };
+                                                r.perse = x.PERSE;
+                                                r.giocate = x.GIOCATE;
+                                                r.punti = x.PUNTI;
+                                                r.dr = (x.GF - x.GS);
+                                                r.vinte = x.VINTE;
+                                                r.pareggiate = x.PAREGGIATE;
+                                                r.punti_penalita = x.punti_penalita;
+                                                r.gf = x.GF;
+                                                r.gs = x.GS;
+                                                classifica.righe.Add(r);
+
+                                                listaSquadreToEmpty.Remove(sq);
+                                            }
+                                            //Aggiungo record per squadre che non hanno ancora giocato
+                                            foreach (var x in listaSquadreToEmpty)
+                                            {
+                                                rigaClassifica r = new rigaClassifica();
+
+                                                r.squadra = new squadra() { id = x.ID, logo = x.LogoSquadra, nome = x.NomeSquadra };
+                                                r.perse = 0;
+                                                r.giocate = 0;
+                                                r.punti = 0;
+                                                r.dr = 0;
+                                                r.vinte = 0;
+                                                r.pareggiate = 0;
+                                                r.punti_penalita = 0;
+                                                r.gs = 0;
+                                                r.gf = 0;
+                                                classifica.righe.Add(r);
+
+                                            }
+
+                                            ev.classifiche.Add(classifica);
+
+                                        }
                                         #endregion
                                     }
                                 }
@@ -719,9 +812,9 @@ namespace AbsoluteAPI.Controllers
 
 
                         response.status = 1;
-                        
+
                     }
-                      
+
                 }
                 else
                 {
@@ -904,7 +997,7 @@ namespace AbsoluteAPI.Controllers
                                 .OrderBy(t => t.id)
                                 .AsQueryable();
                         //
-                        
+
                         response.competizioni = new List<competizione>();
                         foreach (var x in i)
                         {
@@ -918,7 +1011,7 @@ namespace AbsoluteAPI.Controllers
                                                 {
                                                     id_evento = m.Key,
                                                     nome_evento = m.FirstOrDefault().NOME_EVENTO,
-                                                    incontri = m.OrderBy(t=>t.ORA_POSTICIPO).ThenBy(t => t.ORA).ToList()
+                                                    incontri = m.OrderBy(t => t.ORA_POSTICIPO).ThenBy(t => t.ORA).ToList()
                                                 })
                                                 .OrderBy(t => t.id_evento)
                                                 .AsQueryable();
@@ -982,7 +1075,7 @@ namespace AbsoluteAPI.Controllers
 
                                             CAMPI campi = ctx.CAMPI.Where(t => t.ID == c1.id).FirstOrDefault();
                                             c1.nome = campi.NOMECAMPO;
-                                            
+
 
 
                                             if (!string.IsNullOrEmpty("" + campi.GMAP))
