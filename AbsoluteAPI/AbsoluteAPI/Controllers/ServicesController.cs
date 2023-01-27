@@ -252,7 +252,7 @@ namespace AbsoluteAPI.Controllers
         public eventiSquadra elencoEventiSquadra(int id)
         {
             eventiSquadra response = new eventiSquadra();
-
+            response.status = 99;
             try
             {
                 if (id > 0)
@@ -312,6 +312,13 @@ namespace AbsoluteAPI.Controllers
 
                                     response.competizioni.Add(c);
                                 }
+
+                                response.status = 1;
+                            }
+                            else
+                            {
+                                response.message = constMsg._noEventi;
+
                             }
                         }
                         else
@@ -321,7 +328,7 @@ namespace AbsoluteAPI.Controllers
                         }
                     }
 
-                    response.status = 1;
+                  
                 }
                 else
                 {
@@ -806,10 +813,6 @@ namespace AbsoluteAPI.Controllers
                             response.status = 99;
                             response.message = constMsg._noDettaglio;
                         }
-
-
-                       
-
                     }
 
                 }

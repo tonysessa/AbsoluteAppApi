@@ -23,5 +23,6 @@ namespace AbsoluteAPI.support
         public const string _clsGenerale = "Classifica Generale";
         public const string _cls = "Classifica";
         public const string _clsClausura = "Classifica Clausura";
+        public const string _noEventi = "Nessun evento disponibile";
     }
 }
