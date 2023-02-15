@@ -27,6 +27,7 @@ namespace AbsoluteAPI.Model
                 if (!string.IsNullOrEmpty(ret))
                 {
                     ret = ret.Replace("'", @"\'").Replace("\n", "").Replace("<br />", @"\n").Replace("\"", @"\'");
+                    ret = ret.Replace("#", "");
                 }
                 return ret;
             }
@@ -41,6 +42,7 @@ namespace AbsoluteAPI.Model
                 {
                     ret = ret.Replace("\r", "<br />");
                     ret = ret.Replace("'", @"\'").Replace("\n", "").Replace("<br />", @"\n").Replace("\"", @"\'");
+                    ret = ret.Replace("#", "");
                 }
                 return ret;
             }
